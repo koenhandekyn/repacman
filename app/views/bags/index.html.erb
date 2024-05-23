@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Bags</h1>
+
+<div id="bags">
+  <% @bags.each do |bag| %>
+    <%= render bag %>
+    <p>
+      <%= link_to "Show this bag", bag %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New bag", new_bag_path %>

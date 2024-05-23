@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @bag %>
+
+<div>
+  <%= link_to "Edit this bag", edit_bag_path(@bag) %> |
+  <%= link_to "Back to bags", bags_path %>
+
+  <%= button_to "Destroy this bag", @bag, method: :delete %>
+</div>

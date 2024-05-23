@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @printed %>
+
+<div>
+  <%= link_to "Edit this printed", edit_printed_path(@printed) %> |
+  <%= link_to "Back to printeds", printeds_path %>
+
+  <%= button_to "Destroy this printed", @printed, method: :delete %>
+</div>
