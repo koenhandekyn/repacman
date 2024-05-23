@@ -15,4 +15,5 @@ Rails.application.routes.draw do
 
   resources :printeds
   mount Motor::Admin => '/admin'
+  root to: redirect('/admin')
 end
