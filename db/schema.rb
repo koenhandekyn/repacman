@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_23_105705) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_23_111834) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
     t.string "RepackDate", null: false
@@ -47,6 +47,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_105705) do
     t.string "manufacturer_code", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "bio", default: true
+    t.index ["bio"], name: "index_families_on_bio"
     t.index ["manufacturer_code"], name: "index_families_on_manufacturer_code"
     t.index ["name"], name: "index_families_on_name", unique: true
   end

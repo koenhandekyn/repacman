@@ -1,0 +1,49 @@
+---
+engine_version: 0.4.26
+file_version: 2024-05-23 11:27:47.010783000 Z
+resources:
+- name: printed
+  preferences:
+    visible: false
+  updated_at: 2024-05-23 11:27:47.010783000 +00:00
+configs:
+- key: header.links
+  value:
+  - name: "⭐ Star on GitHub"
+    path: https://github.com/motor-admin/motor-admin-rails
+  updated_at: 2024-05-23 10:36:20.399663000 +00:00
+queries:
+- id: 1
+  name: Nicelabel INPUT
+  sql_body: SELECT * FROM nicelabel_input
+  description: The input as presented to Nicelabel
+  preferences:
+    query_type: sql
+    database: primary
+    visualization: table
+    visualization_options: {}
+    variables: []
+  tags: []
+  updated_at: 2024-05-23 11:26:09.580257000 +00:00
+- id: 2
+  name: Summary
+  sql_body: SELECT * FROM summary
+  description:
+  preferences:
+    query_type: sql
+    database: primary
+    visualization: table
+    visualization_options: {}
+    variables: []
+  tags: []
+  updated_at: 2024-05-23 11:27:20.744803000 +00:00
+dashboards: []
+forms: []
+alerts: []
+api_configs:
+- id: 1
+  name: origin
+  url: "/"
+  preferences: {}
+  description:
+  updated_at: 2024-05-23 10:36:20.714190000 +00:00
