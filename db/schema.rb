@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_23_102045) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_23_105705) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
     t.string "RepackDate", null: false
@@ -37,12 +37,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_102045) do
 
   create_table "families", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
-    t.text "composition", null: false
-    t.text "components", null: false
-    t.text "additives", null: false
-    t.text "dosage", null: false
-    t.text "claims", null: false
-    t.text "instructions", null: false
+    t.text "composition"
+    t.text "components"
+    t.text "additives"
+    t.text "dosage"
+    t.text "claims"
+    t.text "instructions"
     t.integer "tht_months"
     t.string "manufacturer_code", default: "", null: false
     t.datetime "created_at", null: false
@@ -258,6 +258,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_102045) do
     t.string "country", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["name"], name: "index_plants_on_name"
   end
 
   create_table "products", charset: "utf8mb4", force: :cascade do |t|

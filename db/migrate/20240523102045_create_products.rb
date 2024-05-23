@@ -46,12 +46,12 @@ class CreateProducts < ActiveRecord::Migration[7.1]
 
     create_table :families do |t|
       t.string :name, null: false
-      t.text :composition, null: false
-      t.text :components, null: false
-      t.text :additives, null: false
-      t.text :dosage, null: false
-      t.text :claims, null: false
-      t.text :instructions, null: false
+      t.text :composition, null: true
+      t.text :components, null: true
+      t.text :additives, null: true
+      t.text :dosage, null: true
+      t.text :claims, null: true
+      t.text :instructions, null: true
       t.integer :tht_months, null: true
       t.string :manufacturer_code, null: false, default: ""
 
