@@ -1,11 +1,10 @@
 ---
 engine_version: 0.4.26
-file_version: 2024-05-23 11:27:47.010783000 Z
+file_version: 2024-05-23 12:10:19.853324000 Z
 resources:
 - name: printed
-  preferences:
-    visible: false
-  updated_at: 2024-05-23 11:27:47.010783000 +00:00
+  preferences: {}
+  updated_at: 2024-05-23 12:10:19.853324000 +00:00
 configs:
 - key: header.links
   value:
