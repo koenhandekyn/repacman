@@ -23,6 +23,10 @@ gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 
+# App specific
+gem "motor-admin", "~> 0.4.26"
+gem "slim-rails", "~> 3.6"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -50,6 +54,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "html2slim", github: "slim-template/html2slim"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -63,5 +68,3 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-gem "motor-admin", "~> 0.4.26"

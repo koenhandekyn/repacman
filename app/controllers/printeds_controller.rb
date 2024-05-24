@@ -4,6 +4,28 @@ class PrintedsController < ApplicationController
   # GET /printeds
   def index
     @printeds = Printed.all
+    @printeds = Printed.where(Batch: params[:batch]) if params[:batch].present?
+  end
+
+  def export
+    @printeds = Printed.transaction do
+      # Lock the rows with xml_exported_at as nil to prevent other transactions from updating them
+      printeds = Printed.xml_exported_at_nil.lock(true)
+      # Update the locked rows' xml_exported_at field to the current time
+      Printed.where(id: printeds.map(&:id)).update_all(xml_exported_at: Time.now)
+      # Return the locked rows
+      printeds
+    end
+    respond_to do |format|
+
+      format.xml {
+        # force download
+        send_data(render_to_string,
+                  filename: "exact-repacman-#{Time.zone.now.to_date}.xml",
+                  type: "application/xml",
+                  disposition: 'attachment')
+      }
+    end
   end
 
   # GET /printeds/1

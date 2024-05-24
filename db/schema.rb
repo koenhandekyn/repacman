@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_23_121754) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
     t.string "RepackDate", null: false
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_121754) do
     t.string "XMLExported", limit: 1, default: "0", null: false
     t.timestamp "CreatedAt", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "UpdatedAt", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
+    t.datetime "xml_exported_at"
     t.index ["NicelabelId"], name: "NicelabelId", unique: true
   end
 

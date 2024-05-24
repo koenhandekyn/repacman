@@ -1,0 +1,10 @@
+p[style="color: green"]
+  = notice
+h1
+  | Families
+#families
+  - @families.each do |family|
+    = render family
+    p
+      = link_to "Show this family", family
+= link_to "New family", new_family_path

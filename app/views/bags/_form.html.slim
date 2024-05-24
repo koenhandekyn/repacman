@@ -1,0 +1,15 @@
+= form_with(model: bag) do |form|
+  - if bag.errors.any?
+    div[style="color: red"]
+      h2
+        = pluralize(bag.errors.count, "error")
+        |  prohibited this bag from being saved:
+      ul
+        - bag.errors.each do |error|
+          li
+            = error.full_message
+  div
+    = form.label :name, style: "display: block"
+    = form.text_field :name
+  div
+    = form.submit
