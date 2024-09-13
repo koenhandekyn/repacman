@@ -27,7 +27,7 @@ css:
 
 p
   ' Last export was at
-  input type="datetime-local" value="#{@last_xml_exported_at.strftime('%Y-%m-%dT%H:%M')}" readonly=true
+  input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true
 
 p
   a#export-btn.btn href=export_printeds_path(format: :xml) Export XML (Exact) - ##{@export_count} records
