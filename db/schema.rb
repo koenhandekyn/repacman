@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_25_144359) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
-    t.string "RepackDate", null: false
+    t.string "RepackDate"
     t.string "ItemCode", null: false
     t.integer "WarehouseCode", null: false
     t.integer "PlannedQuantity", null: false
@@ -21,19 +21,61 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
     t.string "Weight"
     t.string "Batch"
     t.string "MotherBatch"
-    t.string "BestBeforeDate"
-    t.string "XMLExported", limit: 1, default: "0", null: false
+    t.boolean "XMLExported", default: false, null: false
     t.timestamp "CreatedAt", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "UpdatedAt", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
     t.datetime "xml_exported_at"
+    t.date "Best_Before_Date"
     t.index ["NicelabelId"], name: "NicelabelId", unique: true
+  end
+
+  create_table "assemblies", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "parent_family_id", null: false
+    t.integer "child_family_id", null: false
+    t.decimal "weight", precision: 10, default: "1", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_family_id"], name: "index_assemblies_on_child_family_id"
+    t.index ["parent_family_id"], name: "index_assemblies_on_parent_family_id"
   end
 
   create_table "bags", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
+    t.string "weight"
+    t.index ["name"], name: "index_bags_on_name", unique: true
+  end
+
+  create_table "batch_packagings", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "batch_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.string "batch_uid", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_bags_on_name", unique: true
+    t.index ["batch_id"], name: "index_batch_packagings_on_batch_id"
+  end
+
+  create_table "batch_products", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "batch_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.string "batch_uid", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_batch_products_on_batch_id"
+  end
+
+  create_table "batches", charset: "utf8mb4", force: :cascade do |t|
+    t.datetime "produced_at", null: false
+    t.string "batch_uid", default: "", null: false
+    t.integer "family_id", null: false
+    t.decimal "weight", precision: 10, default: "1", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_uid"], name: "index_batches_on_batch_uid", unique: true
+    t.index ["family_id"], name: "index_batches_on_family_id"
   end
 
   create_table "families", charset: "utf8mb4", force: :cascade do |t|
@@ -46,9 +88,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
     t.text "instructions"
     t.integer "tht_months"
     t.string "manufacturer_code", default: "", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
     t.boolean "bio", default: true
+    t.boolean "is_batch"
     t.index ["bio"], name: "index_families_on_bio"
     t.index ["manufacturer_code"], name: "index_families_on_manufacturer_code"
     t.index ["name"], name: "index_families_on_name", unique: true
@@ -56,8 +99,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
 
   create_table "labels", charset: "utf8mb4", force: :cascade do |t|
     t.string "nicelabel_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
+    t.string "printer_name"
     t.index ["nicelabel_name"], name: "index_labels_on_nicelabel_name", unique: true
   end
 
@@ -259,9 +303,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
     t.string "zip", default: "", null: false
     t.string "city", default: "", null: false
     t.string "country", default: "", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
     t.string "name"
+    t.string "email", default: ""
     t.index ["name"], name: "index_plants_on_name"
   end
 
@@ -273,8 +318,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_191158) do
     t.integer "label_id"
     t.integer "plant_id", null: false
     t.integer "bag_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
+    t.boolean "is_active", default: true
+    t.boolean "print_label_repack"
+    t.string "label_background_url"
     t.index ["bag_id"], name: "index_products_on_bag_id"
     t.index ["barcode"], name: "index_products_on_barcode", unique: true
     t.index ["code"], name: "index_products_on_code", unique: true

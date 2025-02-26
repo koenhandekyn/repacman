@@ -1,16 +1,314 @@
 ---
 engine_version: 0.4.26
-file_version: 2024-05-23 12:10:19.853324000 Z
+file_version: 2025-02-26 16:04:46.880230000 Z
 resources:
+- name: assembly
+  preferences:
+    display_name: Samenstellingen
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+    - name: name
+      display_name: Name
+      column_type: string
+      access_type: read_only
+      virtual: true
+      format: {}
+      validators: []
+      description: Name
+    - access_type: hidden
+      reference:
+        name: parent
+        display_name: Parent
+        model_name: family
+        reference_type: belongs_to
+        foreign_key: parent_family_id
+        primary_key: id
+        options: {}
+        polymorphic:
+        virtual: false
+      name: parent_family_id
+    - reference:
+        name: child
+        display_name: Child
+        model_name: family
+        reference_type: belongs_to
+        foreign_key: child_family_id
+        primary_key: id
+        options: {}
+        polymorphic:
+        virtual: false
+      name: child_family_id
+    - access_type: hidden
+      name: id
+  updated_at: 2025-02-26 16:48:56.161703000 +01:00
+- name: bag
+  preferences:
+    icon: paper-bag
+    columns:
+    - access_type: hidden
+      name: created_at
+    custom_sql: SELECT `bags`.* FROM `bags` ORDER BY name
+  updated_at: 2024-05-24 08:38:07.145125000 +02:00
+- name: batch
+  preferences:
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: id
+    display_column: batch_uid
+  updated_at: 2025-02-26 17:02:16.002387000 +01:00
+- name: batch_packaging
+  preferences:
+    display_name: Batch Created
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+  updated_at: 2025-02-26 16:58:36.177588000 +01:00
+- name: batch_product
+  preferences:
+    display_name: Batch Used
+    columns:
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: updated_at
+  updated_at: 2025-02-26 17:04:46.880230000 +01:00
+- name: family
+  preferences:
+    associations:
+    - display_name: Samenstelligen
+      name: assemblies
+    - display_name: Producten
+      name: products
+  updated_at: 2025-02-26 16:45:38.803544000 +01:00
+- name: label
+  preferences:
+    icon: tag
+    custom_sql: SELECT `labels`.* FROM `labels` ORDER BY nicelabel_name
+  updated_at: 2024-05-24 08:38:59.488478000 +02:00
+- name: plant
+  preferences:
+    icon: building-factory-2
+  updated_at: 2024-05-23 14:11:31.692638000 +02:00
 - name: printed
-  preferences: {}
-  updated_at: 2024-05-23 12:10:19.853324000 +00:00
+  preferences:
+    icon: printer
+    columns:
+    - access_type: hidden
+      name: UpdatedAt
+    - access_type: hidden
+      name: CreatedAt
+    - name: best_before_date_date
+      display_name: BestBeforeDate_date
+      column_type: date
+      access_type: hidden
+      virtual: true
+      format: {}
+      validators: []
+      description: ''
+    - reference:
+        name: product
+        display_name: Product
+        model_name: product
+        reference_type: belongs_to
+        foreign_key: code
+        primary_key: Itemcode
+        options: {}
+        polymorphic:
+        virtual: false
+      access_type: hidden
+      name: code
+    - access_type: hidden
+      name: BestBeforeDate
+    - access_type: hidden
+      name: NicelabelId
+    scopes:
+    - name: not_imported_into_eo
+      display_name: Not imported into EO
+      scope_type: filter
+      preferences:
+        filter:
+        - XMLExported:
+            neq: true
+        sort:
+          key: id
+          order: desc
+    - visible: false
+      name: xml_exported_at_not_nil
+    - visible: false
+      name: xml_exported_at_nil
+  updated_at: 2025-02-06 11:39:11.026760000 +01:00
+- name: product
+  preferences:
+    icon: sitemap
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+    - name: name
+      display_name: Name
+      column_type: string
+      access_type: read_only
+      virtual: true
+      format: {}
+      validators: []
+      description: Name
+    display_column: name
+  updated_at: 2025-02-26 16:56:20.258743000 +01:00
+- name: production/batch
+  preferences:
+    display_name: 'P: Batches'
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+  updated_at: 2025-02-25 16:32:20.494617000 +01:00
+- name: production/batch_ingredient
+  preferences:
+    columns:
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: updated_at
+    display_name: 'P: Batch Ingredients'
+  updated_at: 2025-02-25 16:17:47.723610000 +01:00
+- name: production/batch_packaging
+  preferences:
+    display_name: 'P: Batch Packagings'
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+  updated_at: 2025-02-25 16:19:07.121216000 +01:00
+- name: production/packaging
+  preferences:
+    display_name: 'P: Packagings'
+  updated_at: 2025-02-25 16:31:26.388194000 +01:00
+- name: production/product
+  preferences:
+    columns:
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: updated_at
+    display_name: 'P: Products'
+  updated_at: 2025-02-25 16:18:27.612745000 +01:00
+- name: production/product_ingredient
+  preferences:
+    display_name: 'P: Product Ingredients'
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: id
+  updated_at: 2025-02-25 16:21:10.238754000 +01:00
+- name: production/product_packaging
+  preferences:
+    display_name: 'P: Product Packagings'
+    associations:
+    - name: packaging
+      display_name: packaging
+      model_name: production/packaging
+      foreign_key: id
+      primary_key: packaging_id
+      virtual: true
+      polymorphic: false
+      slug: packaging
+  updated_at: 2025-02-25 16:24:03.338085000 +01:00
 configs:
 - key: header.links
   value:
-  - name: "⭐ Star on GitHub"
-    path: https://github.com/motor-admin/motor-admin-rails
-  updated_at: 2024-05-23 10:36:20.399663000 +00:00
+  - conditions: []
+    type: header
+    name: Home
+    path: "/"
+    link_type: header
+  - name: Reports
+    link_type: reports
+  - name: Forms
+    link_type: forms
+  updated_at: 2024-05-24 15:52:30.198504000 +02:00
+- key: resources.assembly.columns.order
+  value:
+  - id
+  - child_family_id
+  - name
+  - weight
+  - parent_family_id
+  - updated_at
+  - created_at
+  updated_at: 2025-02-26 16:48:40.791290000 +01:00
+- key: resources.order
+  value:
+  - family
+  - assembly
+  - product
+  - batch
+  - batch_product
+  - batch_packaging
+  - bag
+  - plant
+  - label
+  - printed
+  updated_at: 2025-02-26 16:51:14.484705000 +01:00
+- key: resources.plant.columns.order
+  value:
+  - id
+  - name
+  - streetnr
+  - zip
+  - city
+  - country
+  - updated_at
+  - created_at
+  updated_at: 2024-05-30 09:45:20.434262000 +02:00
+- key: resources.printed.columns.order
+  value:
+  - id
+  - XMLExported
+  - code
+  - NicelabelId
+  - RepackDate
+  - ItemCode
+  - WarehouseCode
+  - PlannedQuantity
+  - ProductDescription
+  - Weight
+  - Batch
+  - MotherBatch
+  - Best_Before_Date
+  - BestBeforeDate
+  - CreatedAt
+  - UpdatedAt
+  - xml_exported_at
+  - best_before_date_date
+  updated_at: 2025-01-06 11:16:30.782709000 +01:00
+- key: resources.product.columns.order
+  value:
+  - id
+  - code
+  - family_id
+  - weight
+  - barcode
+  - bag_id
+  - label_id
+  - plant_id
+  - updated_at
+  - created_at
+  updated_at: 2024-05-23 19:49:31.610989000 +02:00
 queries:
 - id: 1
   name: Nicelabel INPUT
@@ -23,7 +321,7 @@ queries:
     visualization_options: {}
     variables: []
   tags: []
-  updated_at: 2024-05-23 11:26:09.580257000 +00:00
+  updated_at: 2024-05-23 13:26:09.580257000 +02:00
 - id: 2
   name: Summary
   sql_body: SELECT * FROM summary
@@ -35,7 +333,7 @@ queries:
     visualization_options: {}
     variables: []
   tags: []
-  updated_at: 2024-05-23 11:27:20.744803000 +00:00
+  updated_at: 2024-05-23 13:27:20.744803000 +02:00
 dashboards: []
 forms: []
 alerts: []
@@ -45,4 +343,4 @@ api_configs:
   url: "/"
   preferences: {}
   description:
-  updated_at: 2024-05-23 10:36:20.714190000 +00:00
+  updated_at: 2024-05-23 12:36:20.714190000 +02:00

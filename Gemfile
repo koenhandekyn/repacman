@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.3.5"
+ruby "3.4.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7"
@@ -26,6 +26,7 @@ gem "stimulus-rails"
 # App specific
 gem "motor-admin", "~> 0.4.26"
 gem "slim-rails", "~> 3.6"
+gem "csv"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
