@@ -6,6 +6,10 @@ class Assembly < ApplicationRecord
     "#{child.name}"
   end
 
+  def fraction
+    ((weight / parent.total_assembly_weight) * 100).round(2)
+  end
+
   alias :to_s :name
   alias :display_name :name
 end

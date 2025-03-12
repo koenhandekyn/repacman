@@ -8,7 +8,7 @@ class CreateProductionProducts < ActiveRecord::Migration[7.1]
     create_table :assemblies do |t|
       t.integer :parent_family_id, null: false
       t.integer :child_family_id, null: false
-      t.decimal :weight, null: false, default: 1.0
+      t.decimal :weight, null: false, default: 1.0, precision: 10, scale: 2
 
       t.timestamps
     end
@@ -34,7 +34,7 @@ class CreateProductionProducts < ActiveRecord::Migration[7.1]
     # 3
     # This is about tracking the ingredients of a batch
     # What stock items are used to create a batch (decreases stock)
-    create_table :batch_products do |t|
+    create_table :batch_inputs do |t|
       t.integer :batch_id, null: false
       t.integer :product_id, null: false
       t.integer :quantity, null: false, default: 1
@@ -43,12 +43,12 @@ class CreateProductionProducts < ActiveRecord::Migration[7.1]
       t.timestamps
     end
     # Add index to batch_id
-    add_index :batch_products, :batch_id
+    add_index :batch_inputs, :batch_id
 
     # 4
     # This is about tracking the packagings of a batch, that result in products
     # What stock items are created from a batch (increases stock)
-    create_table :batch_packagings do |t|
+    create_table :batch_outputs do |t|
       t.integer :batch_id, null: false   # batch family varkensbrokken (100kg)
       t.integer :product_id, null: false  # zakken van 10kg (10x)
       t.integer :quantity, null: false, default: 1 # 10kg
@@ -59,7 +59,7 @@ class CreateProductionProducts < ActiveRecord::Migration[7.1]
       t.timestamps
     end
     # Add index to batch_id
-    add_index :batch_packagings, :batch_id
+    add_index :batch_outputs, :batch_id
 
     # TODO: Append weight to the existing Bags table
     add_column :bags, :weight, :string

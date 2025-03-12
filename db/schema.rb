@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_25_144359) do
   create_table "assemblies", charset: "utf8mb4", force: :cascade do |t|
     t.integer "parent_family_id", null: false
     t.integer "child_family_id", null: false
-    t.decimal "weight", precision: 10, default: "1", null: false
+    t.decimal "weight", precision: 10, scale: 2, default: "1.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["child_family_id"], name: "index_assemblies_on_child_family_id"
@@ -47,24 +47,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_25_144359) do
     t.index ["name"], name: "index_bags_on_name", unique: true
   end
 
-  create_table "batch_packagings", charset: "utf8mb4", force: :cascade do |t|
+  create_table "batch_inputs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "batch_id", null: false
     t.integer "product_id", null: false
     t.integer "quantity", default: 1, null: false
     t.string "batch_uid", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["batch_id"], name: "index_batch_packagings_on_batch_id"
+    t.index ["batch_id"], name: "index_batch_inputs_on_batch_id"
   end
 
-  create_table "batch_products", charset: "utf8mb4", force: :cascade do |t|
+  create_table "batch_outputs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "batch_id", null: false
     t.integer "product_id", null: false
     t.integer "quantity", default: 1, null: false
     t.string "batch_uid", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["batch_id"], name: "index_batch_products_on_batch_id"
+    t.index ["batch_id"], name: "index_batch_outputs_on_batch_id"
   end
 
   create_table "batches", charset: "utf8mb4", force: :cascade do |t|

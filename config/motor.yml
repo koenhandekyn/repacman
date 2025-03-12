@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.26
-file_version: 2025-02-26 16:04:46.880230000 Z
+file_version: 2025-03-12 15:53:18.215469000 Z
 resources:
 - name: assembly
   preferences:
@@ -11,15 +11,14 @@ resources:
     - access_type: hidden
       name: created_at
     - name: name
-      display_name: Name
+      display_name: name
       column_type: string
       access_type: read_only
       virtual: true
       format: {}
       validators: []
       description: Name
-    - access_type: hidden
-      reference:
+    - reference:
         name: parent
         display_name: Parent
         model_name: family
@@ -29,6 +28,7 @@ resources:
         options: {}
         polymorphic:
         virtual: false
+      display_name: Product
       name: parent_family_id
     - reference:
         name: child
@@ -40,10 +40,22 @@ resources:
         options: {}
         polymorphic:
         virtual: false
+      display_name: Ingredient
       name: child_family_id
     - access_type: hidden
       name: id
-  updated_at: 2025-02-26 16:48:56.161703000 +01:00
+    - display_name: Gewicht
+      name: weight
+    - name: fraction
+      display_name: fraction
+      column_type: float
+      access_type: read_only
+      virtual: true
+      format: {}
+      validators: []
+      description: Fraction
+    icon: abacus
+  updated_at: 2025-03-12 16:53:17.924421000 +01:00
 - name: bag
   preferences:
     icon: paper-bag
@@ -62,7 +74,26 @@ resources:
     - access_type: hidden
       name: id
     display_column: batch_uid
-  updated_at: 2025-02-26 17:02:16.002387000 +01:00
+    icon: asset
+  updated_at: 2025-02-26 20:20:09.338044000 +01:00
+- name: batch_input
+  preferences:
+    display_name: Batch Input
+    columns:
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: updated_at
+  updated_at: 2025-02-26 17:04:46.880230000 +01:00
+- name: batch_output
+  preferences:
+    display_name: Batch Output
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+  updated_at: 2025-02-26 16:58:36.177588000 +01:00
 - name: batch_packaging
   preferences:
     display_name: Batch Created
@@ -71,7 +102,10 @@ resources:
       name: updated_at
     - access_type: hidden
       name: created_at
-  updated_at: 2025-02-26 16:58:36.177588000 +01:00
+    - access_type: hidden
+      name: id
+    icon: arrow-bottom-circle
+  updated_at: 2025-02-26 20:22:54.083916000 +01:00
 - name: batch_product
   preferences:
     display_name: Batch Used
@@ -80,7 +114,10 @@ resources:
       name: created_at
     - access_type: hidden
       name: updated_at
-  updated_at: 2025-02-26 17:04:46.880230000 +01:00
+    - access_type: hidden
+      name: id
+    icon: anchor
+  updated_at: 2025-02-26 20:22:46.384746000 +01:00
 - name: family
   preferences:
     associations:
@@ -88,7 +125,8 @@ resources:
       name: assemblies
     - display_name: Producten
       name: products
-  updated_at: 2025-02-26 16:45:38.803544000 +01:00
+    icon: face-id
+  updated_at: 2025-02-26 20:10:53.896780000 +01:00
 - name: label
   preferences:
     icon: tag
@@ -148,7 +186,7 @@ resources:
   updated_at: 2025-02-06 11:39:11.026760000 +01:00
 - name: product
   preferences:
-    icon: sitemap
+    icon: box
     columns:
     - access_type: hidden
       name: updated_at
@@ -163,7 +201,7 @@ resources:
       validators: []
       description: Name
     display_column: name
-  updated_at: 2025-02-26 16:56:20.258743000 +01:00
+  updated_at: 2025-02-26 20:11:39.435894000 +01:00
 - name: production/batch
   preferences:
     display_name: 'P: Batches'
@@ -182,6 +220,15 @@ resources:
       name: updated_at
     display_name: 'P: Batch Ingredients'
   updated_at: 2025-02-25 16:17:47.723610000 +01:00
+- name: production/batch_output
+  preferences:
+    display_name: 'P: Batch Packagings'
+    columns:
+    - access_type: hidden
+      name: updated_at
+    - access_type: hidden
+      name: created_at
+  updated_at: 2025-02-25 16:19:07.121216000 +01:00
 - name: production/batch_packaging
   preferences:
     display_name: 'P: Batch Packagings'
@@ -244,26 +291,33 @@ configs:
 - key: resources.assembly.columns.order
   value:
   - id
+  - parent_family_id
   - child_family_id
   - name
   - weight
-  - parent_family_id
   - updated_at
   - created_at
-  updated_at: 2025-02-26 16:48:40.791290000 +01:00
+  - fractie
+  - name
+  updated_at: 2025-03-12 16:53:18.215469000 +01:00
+- key: resources.batch.associations.order
+  value:
+  - batch_products
+  - batch_packagings
+  updated_at: 2025-02-26 20:47:52.416012000 +01:00
 - key: resources.order
   value:
   - family
   - assembly
   - product
+  - batch_packaging
   - batch
   - batch_product
-  - batch_packaging
   - bag
   - plant
   - label
   - printed
-  updated_at: 2025-02-26 16:51:14.484705000 +01:00
+  updated_at: 2025-02-26 20:18:46.048612000 +01:00
 - key: resources.plant.columns.order
   value:
   - id

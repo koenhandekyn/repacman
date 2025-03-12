@@ -1,5 +1,5 @@
 # Products used to create a batch
-class BatchProduct < ApplicationRecord
+class BatchInput < ApplicationRecord
   belongs_to :batch
   belongs_to :product
 
