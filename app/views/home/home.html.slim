@@ -1,41 +1,16 @@
-css:
-  body {
-    background-color: rgb(255,247,220);
-    color: rgb(0,65,4);
-    font-family: 'Tahoma', sans-serif;
-    text-align: center;
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1em;
-  }
-
-  .logo {
-    height: 8em;
-  }
-
-  h1 {
-    font-size: 4em;
-  }
-
-.header
-  img.logo src=asset_path('logo0.webp')
-  h1 Re-Pac-Man
-
+- content_for :title do
+  | Re-Pac-Man
 p
   ' Last export was at
   input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true
 
-p
-  a#export-btn.btn href=export_printeds_path(format: :xml) Export XML (Exact) - ##{@export_count} records
 
 p = @items.join(", ")
 
-p
-  a.btn href='/admin' Admin
+ul.btn-group
+  li: a#export-btn.btn href=export_printeds_path(format: :xml) Export XML (Exact) - ##{@export_count} records
+  li: a.btn href=batches_path Productie
+  li: a.btn href='/admin' Admin (DB)
 
 javascript:
   document.getElementById("export-btn").addEventListener("click", () => {

@@ -1,0 +1,35 @@
+= form_with(model: batch) do |form|
+  - if batch.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(batch.errors.count, "error")} prohibited this batch from being saved:"
+      ul
+        - batch.errors.each do |error|
+          li = error.full_message
+
+  form-field
+    label Batch Code
+    form-input
+      = form.text_field :code
+
+  form-field
+    label Production Datetime
+    form-input
+      = form.datetime_field :production_datetime
+
+  form-field
+    label Family
+    form-input
+      = form.collection_select :family_id, Family.all, :id, :name, prompt: "Select Family"
+
+  form-field
+    label Product
+    form-input
+      = form.collection_select :product_id, (batch.family ? batch.family.products : []), :id, :name, prompt: "Select Product"
+
+  form-field
+    label Quantity
+    form-input
+      = form.number_field :quantity
+
+  form-field
+    = form.submit

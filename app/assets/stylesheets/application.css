@@ -1,1 +1,68 @@
 /* Application styles */
+body {
+  background-color: rgb(206, 223, 200);
+  color: rgb(0,65,4);
+  font-family: 'Tahoma', sans-serif;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1em;
+}
+
+.logo {
+  height: 4em;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+ul.btn-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5em;
+  padding: 1em;
+  list-style-type: none;
+  gap: 1em;
+}
+
+button, input[type="submit"], .btn {
+  background-color: rgb(0,65,4);
+  border: none;
+  color: white;
+  padding: 1em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 1.25em;
+}
+
+.btn:hover {
+  background-color: rgb(0, 100, 4);
+}
+
+form {
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form-field {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+form-input  {
+  display: flex;
+  /* padding: 0.5em; */
+  width: 100%;
+  input, select {
+    padding: 0.75em;
+    width: 100%;
+  }
+}

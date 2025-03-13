@@ -1,0 +1,10 @@
+- content_for :title do
+  | Batches
+
+p style="color: green" = notice
+
+= link_to "Nieuwe productie", new_batch_path, class: "btn"
+
+#batches
+  - @batches.each do |batch|
+    == render batch
