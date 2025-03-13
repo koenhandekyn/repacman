@@ -12,7 +12,7 @@ class BatchesController < ApplicationController
 
   # GET /batches/new
   def new
-    @batch = Batch.new
+    @batch = Batch.new(produced_at: Time.zone.now)
   end
 
   # GET /batches/1/edit
