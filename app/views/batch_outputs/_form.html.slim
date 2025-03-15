@@ -1,0 +1,10 @@
+= form_with(model: batch_output) do |form|
+  - if batch_output.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(batch_output.errors.count, "error")} prohibited this batch_output from being saved:"
+      ul
+        - batch_output.errors.each do |error|
+          li = error.full_message
+
+  div
+    = form.submit

@@ -1,3 +1,6 @@
+require 'barby/barcode/code_128'
+require 'barby/outputter/html_outputter'
+
 class ApplicationController < ActionController::Base
   before_action :authenticate
   before_action :set_time_zone

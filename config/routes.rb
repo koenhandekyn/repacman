@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :batches
+  resources :batch_outputs
+  resources :batch_inputs
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -10,11 +11,14 @@ Rails.application.routes.draw do
   resources :printeds do
     get :export, on: :collection
   end
-  resources :families
-  resources :labels
-  resources :plants
-  resources :bags
-  resources :products
+
+  resources :batches
+  resources :assemblies
+  # resources :families
+  # resources :labels
+  # resources :plants
+  # resources :bags
+  # resources :products
 
   mount Motor::Admin => '/admin'
   root 'home#home'

@@ -1,0 +1,7 @@
+= form_with(model: batch_input) do |form|
+  // hidden input with batch_id
+  = form.hidden_field :batch_id
+  .grid
+    = form.collection_select :product_id, Product.where(family: batch.family.children), :id, :name, prompt: "Select Product"
+    = form.number_field :quantity, min: 1
+    = form.submit (batch_input.persisted? ? "Update" : "Create"), data: { disable_with: "Saving..." }

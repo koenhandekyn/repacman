@@ -1,0 +1,11 @@
+p style="color: green" = notice
+
+h1 Batch inputs
+
+#batch_inputs
+  - @batch_inputs.each do |batch_input|
+    == render batch_input
+    p
+      = link_to "Show this batch input", batch_input
+
+= link_to "New batch input", new_batch_input_path

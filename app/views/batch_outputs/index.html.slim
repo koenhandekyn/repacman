@@ -1,0 +1,11 @@
+p style="color: green" = notice
+
+h1 Batch outputs
+
+#batch_outputs
+  - @batch_outputs.each do |batch_output|
+    == render batch_output
+    p
+      = link_to "Show this batch output", batch_output
+
+= link_to "New batch output", new_batch_output_path

@@ -24,7 +24,7 @@ class BatchesController < ApplicationController
     @batch = Batch.new(batch_params)
 
     if @batch.save
-      redirect_to @batch, notice: "Batch was successfully created."
+      redirect_to [:edit, @batch], notice: "Batch was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -53,6 +53,14 @@ class BatchesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def batch_params
-      params.fetch(:batch, {})
+      params.fetch(:batch, { }).permit(:produced_at, :batch_uid, :family_id, :weight)
     end
 end
+
+#  id          :bigint           not null, primary key
+#  produced_at :datetime         not null
+#  batch_uid   :string(255)      default(""), not null
+#  family_id   :integer          not null
+#  weight      :decimal(10, )    default(1), not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null

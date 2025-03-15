@@ -1,0 +1,10 @@
+p style="color: green" = notice
+
+== render @batch_input
+
+div
+  => link_to "Edit this batch input", edit_batch_input_path(@batch_input)
+  '|
+  =< link_to "Back to batch inputs", batch_inputs_path
+
+  = button_to "Destroy this batch input", @batch_input, method: :delete

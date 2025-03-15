@@ -1,0 +1,10 @@
+= form_with(model: batch_input) do |form|
+  - if batch_input.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(batch_input.errors.count, "error")} prohibited this batch_input from being saved:"
+      ul
+        - batch_input.errors.each do |error|
+          li = error.full_message
+
+  div
+    = form.submit

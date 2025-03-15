@@ -1,0 +1,2 @@
+module BatchOutputsHelper
+end

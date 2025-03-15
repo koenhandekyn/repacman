@@ -1,0 +1,10 @@
+h1 Editing batch input
+
+== render "form", batch_input: @batch_input
+
+br
+
+div
+  => link_to "Show this batch input", @batch_input
+  '|
+  =< link_to "Back to batch inputs", batch_inputs_path

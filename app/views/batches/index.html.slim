@@ -1,10 +1,23 @@
 - content_for :title do
-  | Batches
+  | Producties
 
-p style="color: green" = notice
+- if notice
+  p style="color: green" = notice
 
-= link_to "Nieuwe productie", new_batch_path, class: "btn"
+- content_for :menu do
+  = link_to "Nieuwe productie", new_batch_path, class: "btn"
+
 
 #batches
+  batch-row style="font-weight: bold"
+    batch-date Productie
+    batch-uid Batch
+    batch-family Familie
   - @batches.each do |batch|
-    == render batch
+    batch-row id="#{dom_id batch}"
+      batch-produced-at = l(batch.produced_at, format: :short)
+      batch-uid = batch.batch_uid
+      batch-family = batch.family.name
+      actions
+        = link_to "Open", batch, class: "btn"
+        / = link_to "Edit", edit_batch_path(batch), class: "btn"

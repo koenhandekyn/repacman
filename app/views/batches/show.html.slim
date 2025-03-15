@@ -1,10 +1,44 @@
-p style="color: green" = notice
+- content_for :title do
+  a href=batches_path Producties
 
-== render @batch
+- content_for :menu do
+  = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
+  = button_to "Wis", @batch, method: :delete
 
-div
-  => link_to "Edit this batch", edit_batch_path(@batch)
-  '|
-  =< link_to "Back to batches", batches_path
+- if notice
+  p style="color: green" = notice
 
-  = button_to "Destroy this batch", @batch, method: :delete
+batch-card
+  cols3
+    batch-produced-at = l(@batch.produced_at, format: :short)
+    batch-family.title data-family-id=@batch.family_id = @batch.family.name
+    batch-weight = "#{@batch.weight} kg"
+  batch-uid.center.mt
+    == Barby::Code128B.new(@batch.batch_uid).to_html
+    pre.barby-barcode = @batch.batch_uid
+
+h2 Ingredients
+
+- @batch.family.assemblies.each do |assembly|
+  ingredient-card.grid style="grid-template-columns: 4fr 5rem 10rem"
+    ingredient-name = assembly.child.name
+    ingredient-fraction.text-right = number_to_percentage(assembly.fraction * 100, precision: 0)
+    ingredient-weight.text-right = "#{number_with_precision(assembly.fraction_of_weight(@batch.weight), precision: 2)} kg"
+
+h2 Inputs
+
+- @batch.batch_inputs.each do |batch_input|
+  = turbo_frame_tag dom_id(batch_input) do
+    = render "batch_input_form", batch_input: batch_input, batch: @batch
+
+= turbo_frame_tag "new_batch_input" do
+  = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch
+
+h2 Outputs
+
+- @batch.batch_outputs.each do |batch_output|
+  = turbo_frame_tag dom_id(batch_output) do
+    = render "batch_output_form", batch_output: batch_output, batch: @batch
+
+= turbo_frame_tag "new_batch_output" do
+  = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch
