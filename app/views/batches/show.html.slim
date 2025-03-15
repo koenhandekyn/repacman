@@ -12,7 +12,7 @@ batch-card
   cols3
     batch-produced-at = l(@batch.produced_at, format: :short)
     batch-family.title data-family-id=@batch.family_id = @batch.family.name
-    batch-weight = "#{@batch.weight} kg"
+    batch-weight = "#{number_with_precision(@batch.weight, precision: 2, delimiter: ' ')} kg"
   batch-uid.center.mt
     == Barby::Code128B.new(@batch.batch_uid).to_html
     pre.barby-barcode = @batch.batch_uid
@@ -20,25 +20,34 @@ batch-card
 h2 Ingredients
 
 - @batch.family.assemblies.each do |assembly|
-  ingredient-card.grid style="grid-template-columns: 4fr 5rem 10rem"
+  ingredient-card.grid.border-bottom.mb style="grid-template-columns: 4fr 5rem 10rem"
     ingredient-name = assembly.child.name
     ingredient-fraction.text-right = number_to_percentage(assembly.fraction * 100, precision: 0)
-    ingredient-weight.text-right = "#{number_with_precision(assembly.fraction_of_weight(@batch.weight), precision: 2)} kg"
+    ingredient-weight.text-right = "#{number_with_precision(assembly.fraction_of_weight(@batch.weight), precision: 2, delimiter: ' ')} kg"
+
+weights-overview.text-right.flex-col
+  weights-input Total weight inputs: #{number_with_precision(@batch.total_weight_inputs, precision: 2, delimiter: ' ')} kg
+  weights-output.mb.border-bottom Total weight outputs: #{number_with_precision(@batch.total_weight_outputs, precision: 2, delimiter: ' ')} kg
+  weights-difference DELTA input/output: #{number_with_precision(@batch.total_weight_difference_io, precision: 2, delimiter: ' ')} kg
+  weights-difference DELTA input/batch: #{number_with_precision(@batch.total_weight_difference_ib, precision: 2, delimiter: ' ')} kg
+  weights-difference DELTA output/batch: #{number_with_precision(@batch.total_weight_difference_ob, precision: 2, delimiter: ' ')} kg
 
 h2 Inputs
-
+- family = @batch.family.children
+- products = Product.includes(:family).where(family:)
 - @batch.batch_inputs.each do |batch_input|
   = turbo_frame_tag dom_id(batch_input) do
-    = render "batch_input_form", batch_input: batch_input, batch: @batch
-
+    = render "batch_input_form", batch_input:, batch: @batch, products:
+hr
 = turbo_frame_tag "new_batch_input" do
-  = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch
+  = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
 
 h2 Outputs
-
+- family = @batch.family
+- products = Product.includes(:family).where(family:)
 - @batch.batch_outputs.each do |batch_output|
   = turbo_frame_tag dom_id(batch_output) do
-    = render "batch_output_form", batch_output: batch_output, batch: @batch
-
+    = render "batch_output_form", batch_output:, batch: @batch, products:
+hr
 = turbo_frame_tag "new_batch_output" do
-  = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch
+  = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch, products:

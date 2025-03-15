@@ -19,4 +19,24 @@ class Batch < ApplicationRecord
   validates :batch_uid, uniqueness: true # validate batch uid is unique
   validates :produced_at, presence: true
   validates :weight, presence: true, numericality: { greater_than: 0 }
+
+  def total_weight_inputs
+    batch_inputs.map(&:weight).sum
+  end
+
+  def total_weight_outputs
+    batch_outputs.map(&:weight).sum
+  end
+
+  def total_weight_difference_io
+    total_weight_inputs - total_weight_outputs
+  end
+
+  def total_weight_difference_ib
+    total_weight_inputs - weight
+  end
+
+  def total_weight_difference_ob
+    total_weight_outputs - weight
+  end
 end

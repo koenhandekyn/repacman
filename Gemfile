@@ -6,8 +6,6 @@ ruby "3.4.2"
 gem "rails", "~> 7"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-# Use mysql as the database for Active Record
-gem "mysql2", "~> 0.5"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -18,15 +16,16 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # App specific
 gem "motor-admin", "~> 0.4.26"
-gem "slim-rails", "~> 3.6"
+gem "slim-rails"
 gem "csv"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
-gem "annotate", "~> 3.2"
-gem "barby", "~> 0.7.0"
+gem "barby"
+gem "trilogy"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "annotate"
   gem "debug", platforms: %i[ mri windows ]
   gem "dotenv-rails", "~> 3.1"
 end

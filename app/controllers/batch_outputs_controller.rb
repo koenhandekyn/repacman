@@ -21,10 +21,11 @@ class BatchOutputsController < ApplicationController
 
   # POST /batch_outputs
   def create
-    @batch_output = BatchOutput.new(batch_output_params)
+    @batch = Batch.find(batch_output_params[:batch_id])
+    @batch_output = BatchOutput.new(batch_output_params.merge(batch_uid: @batch.batch_uid))
 
     if @batch_output.save
-      redirect_to @batch_output, notice: "Batch output was successfully created."
+      redirect_to @batch_output.batch, notice: "Batch output was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -41,8 +42,9 @@ class BatchOutputsController < ApplicationController
 
   # DELETE /batch_outputs/1
   def destroy
+    batch = @batch_output.batch
     @batch_output.destroy!
-    redirect_to batch_outputs_url, notice: "Batch output was successfully destroyed.", status: :see_other
+    redirect_to batch, notice: "Batch output was successfully destroyed.", status: :see_other
   end
 
   private

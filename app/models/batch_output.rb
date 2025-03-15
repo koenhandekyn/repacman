@@ -10,8 +10,11 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-# Products created from a batch
 class BatchOutput < ApplicationRecord
   belongs_to :batch
   belongs_to :product
+
+  def weight
+    self.quantity * self.product.weight.to_f
+  end
 end
