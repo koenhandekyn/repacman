@@ -1,11 +1,14 @@
-= form_with(model: batch_output) do |form|
-  = form.hidden_field :batch_id
-  batch-output.grid
-    = form.collection_select :product_id, products, :id, :name
-    = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right"
-    = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid
-    = form.submit (batch_output.persisted? ? "Update" : "Create"), data: { disable_with: "Saving..." }
-    - if batch_output.persisted?
-      = button_to "Delete", batch_output, method: :delete, data: { confirm: "Are you sure?" }, class: "btn"
-    - else
-      div
+= turbo_frame_tag batch_output.persisted? ? dom_id(batch_output) : "new_batch_output" do
+  = form_with(model: batch_output) do |form|
+    = form.hidden_field :batch_id
+    batch-output
+      = form.collection_select :product_id, products, :id, :name
+      = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right"
+      = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid
+      actions
+        = form.submit (batch_output.persisted? ? "Bewaar" : "Voe toe"), data: { disable_with: "Bewaren..." }
+        - if batch_output.persisted?
+          / = button_to "Wis", batch_output, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
+          = link_to "Wis", batch_output, data: { turbo_method: :delete }, class: "btn btn-danger"
+        - else
+          div

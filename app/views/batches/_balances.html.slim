@@ -1,0 +1,18 @@
+div
+  h2.text-right Balances
+  weights-overview.flex-col
+    weights-row.input.grid.border-bottom.mb
+      label Inputs
+      weight.text-right #{number_with_precision(batch.total_weight_inputs_in_kg_f, precision: 3, delimiter: ' ')} kg
+    weights-row.output.grid.border-bottom.mb
+      label Outputs
+      weight.text-right #{number_with_precision(batch.total_weight_outputs_in_kg_f, precision: 3, delimiter: ' ')} kg
+    weights-row.difference.grid.border-bottom.mb
+      label Input - Output
+      weight.text-right #{number_with_precision(batch.total_weight_difference_in_kg_io, precision: 3, delimiter: ' ')} kg
+    weights-row.difference.grid.border-bottom.mb
+      label Input - Batch
+      weight.text-right #{number_with_precision(batch.total_weight_difference_in_kg_ib, precision: 3, delimiter: ' ')} kg
+    weights-row.difference.grid.border-bottom.mb
+      label Output - Batch
+      weight.text-right #{number_with_precision(batch.total_weight_difference_in_kg_ob, precision: 3, delimiter: ' ')} kg

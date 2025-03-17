@@ -22,6 +22,7 @@ gem "csv"
 gem "bootsnap", require: false
 gem "barby"
 gem "trilogy"
+gem "ruby-units"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

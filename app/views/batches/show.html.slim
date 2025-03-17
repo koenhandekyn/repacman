@@ -5,8 +5,9 @@
   = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
   = button_to "Wis", @batch, method: :delete
 
-- if notice
-  p style="color: green" = notice
+#flashes
+  - if notice
+    p style="color: green" = notice
 
 batch-card
   cols3
@@ -17,37 +18,37 @@ batch-card
     == Barby::Code128B.new(@batch.batch_uid).to_html
     pre.barby-barcode = @batch.batch_uid
 
-h2 Ingredients
+cols2
+  div
+    h2 Ingredients
+    - @batch.family.assemblies.each do |assembly|
+      ingredient-card.grid.border-bottom.mb style="grid-template-columns: auto 4rem 4rem 7rem"
+        ingredient-name = assembly.child.name
+        ingredient-fraction.text-right = assembly.fraction
+        ingredient-fraction-perc.text-right = number_to_percentage(assembly.fraction_f * 100, precision: 0)
+        ingredient-weight.text-right
+          = "#{number_with_precision(assembly.fraction_of_weight_f(@batch.weight), precision: 3, delimiter: ' ')} kg"
 
-- @batch.family.assemblies.each do |assembly|
-  ingredient-card.grid.border-bottom.mb style="grid-template-columns: 4fr 5rem 10rem"
-    ingredient-name = assembly.child.name
-    ingredient-fraction.text-right = number_to_percentage(assembly.fraction * 100, precision: 0)
-    ingredient-weight.text-right = "#{number_with_precision(assembly.fraction_of_weight(@batch.weight), precision: 2, delimiter: ' ')} kg"
+  div
+    = turbo_frame_tag "balances" do
+      = render "balances", batch: @batch
 
-weights-overview.text-right.flex-col
-  weights-input Total weight inputs: #{number_with_precision(@batch.total_weight_inputs, precision: 2, delimiter: ' ')} kg
-  weights-output.mb.border-bottom Total weight outputs: #{number_with_precision(@batch.total_weight_outputs, precision: 2, delimiter: ' ')} kg
-  weights-difference DELTA input/output: #{number_with_precision(@batch.total_weight_difference_io, precision: 2, delimiter: ' ')} kg
-  weights-difference DELTA input/batch: #{number_with_precision(@batch.total_weight_difference_ib, precision: 2, delimiter: ' ')} kg
-  weights-difference DELTA output/batch: #{number_with_precision(@batch.total_weight_difference_ob, precision: 2, delimiter: ' ')} kg
+hr
 
 h2 Inputs
-- family = @batch.family.children
-- products = Product.includes(:family).where(family:)
-- @batch.batch_inputs.each do |batch_input|
-  = turbo_frame_tag dom_id(batch_input) do
+div#batch_inputs
+  - family = @batch.family.children
+  - products = Product.includes(:family).where(family:)
+  - @batch.batch_inputs.each do |batch_input|
     = render "batch_input_form", batch_input:, batch: @batch, products:
 hr
-= turbo_frame_tag "new_batch_input" do
-  = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
+= render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
 
 h2 Outputs
-- family = @batch.family
-- products = Product.includes(:family).where(family:)
-- @batch.batch_outputs.each do |batch_output|
-  = turbo_frame_tag dom_id(batch_output) do
+div#batch_outputs
+  - family = @batch.family
+  - products = Product.includes(:family).where(family:)
+  - @batch.batch_outputs.each do |batch_output|
     = render "batch_output_form", batch_output:, batch: @batch, products:
 hr
-= turbo_frame_tag "new_batch_output" do
-  = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch, products:
+= render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch, products:

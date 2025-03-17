@@ -8,7 +8,7 @@ class CreateProductionProducts < ActiveRecord::Migration[7.1]
     create_table :assemblies do |t|
       t.integer :parent_family_id, null: false
       t.integer :child_family_id, null: false
-      t.decimal :weight, null: false, default: 1.0, precision: 10, scale: 2
+      t.string :weight, null: false, default: ""
 
       t.timestamps
     end
@@ -22,7 +22,7 @@ class CreateProductionProducts < ActiveRecord::Migration[7.1]
       t.datetime :produced_at, null: false
       t.string :batch_uid, null: false, default: ""
       t.integer :family_id, null: false
-      t.decimal :weight, null: false, default: 1.0
+      t.string :weight, null: false, default: ""
 
       t.timestamps
     end

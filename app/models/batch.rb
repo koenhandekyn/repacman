@@ -20,23 +20,39 @@ class Batch < ApplicationRecord
   validates :produced_at, presence: true
   validates :weight, presence: true, numericality: { greater_than: 0 }
 
-  def total_weight_inputs
-    batch_inputs.map(&:weight).sum
+  def weight_in_kg
+    Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
   end
 
-  def total_weight_outputs
-    batch_outputs.map(&:weight).sum
+  def weight_in_kg_f
+    weight_in_kg.respond_to?(:scalar) ? weight_in_kg.scalar.to_f : weight_in_kg.to_f
   end
 
-  def total_weight_difference_io
-    total_weight_inputs - total_weight_outputs
+  def total_weight_inputs_in_kg
+    batch_inputs.map(&:weight_in_kg).sum
   end
 
-  def total_weight_difference_ib
-    total_weight_inputs - weight
+  def total_weight_inputs_in_kg_f
+    total_weight_inputs_in_kg.respond_to?(:scalar) ? total_weight_inputs_in_kg.scalar.to_f : total_weight_inputs_in_kg.to_f
   end
 
-  def total_weight_difference_ob
-    total_weight_outputs - weight
+  def total_weight_outputs_in_kg
+    batch_outputs.map(&:weight_in_kg).sum
+  end
+
+  def total_weight_outputs_in_kg_f
+    total_weight_outputs_in_kg.respond_to?(:scalar) ? total_weight_outputs_in_kg.scalar.to_f : total_weight_outputs_in_kg.to_f
+  end
+
+  def total_weight_difference_in_kg_io
+    total_weight_outputs_in_kg_f - total_weight_outputs_in_kg_f
+  end
+
+  def total_weight_difference_in_kg_ib
+    total_weight_inputs_in_kg_f - weight_in_kg_f
+  end
+
+  def total_weight_difference_in_kg_ob
+    total_weight_outputs_in_kg_f - weight_in_kg_f
   end
 end

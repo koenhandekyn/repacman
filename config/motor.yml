@@ -1,6 +1,6 @@
 ---
-engine_version: 0.4.26
-file_version: 2025-03-12 15:53:18.215469000 Z
+engine_version: 0.4.36
+file_version: 2025-03-17 10:28:43.321935000 Z
 resources:
 - name: assembly
   preferences:
@@ -53,9 +53,17 @@ resources:
       virtual: true
       format: {}
       validators: []
-      description: Fraction
+      description: Aandeel in het totale gewicht van de ingredienten
+    - name: weight_in_kg
+      display_name: weight_in_kg
+      column_type: string
+      access_type: read_only
+      virtual: true
+      format: {}
+      validators: []
+      description: Het gewicht in kg zoals verwerkt
     icon: abacus
-  updated_at: 2025-03-12 16:53:17.924421000 +01:00
+  updated_at: 2025-03-17 08:39:22.459701000 +01:00
 - name: bag
   preferences:
     icon: paper-bag
@@ -126,7 +134,20 @@ resources:
     - display_name: Producten
       name: products
     icon: face-id
-  updated_at: 2025-02-26 20:10:53.896780000 +01:00
+    columns:
+    - name: total_assembly_weight_in_kg_f
+      display_name: total_assembly_weight_in_kg_f
+      column_type: string
+      access_type: read_write
+      virtual: true
+      format: {}
+      validators: []
+      description: ''
+    - access_type: hidden
+      name: created_at
+    - access_type: hidden
+      name: updated_at
+  updated_at: 2025-03-17 07:55:29.394920000 +01:00
 - name: label
   preferences:
     icon: tag
@@ -200,8 +221,15 @@ resources:
       format: {}
       validators: []
       description: Name
+    - name: weight_in_kg
+      display_name: weight_in_kg
+      column_type: string
+      access_type: read_write
+      virtual: true
+      format: {}
+      validators: []
     display_column: name
-  updated_at: 2025-02-26 20:11:39.435894000 +01:00
+  updated_at: 2025-03-17 08:27:48.933791000 +01:00
 - name: production/batch
   preferences:
     display_name: 'P: Batches'
@@ -281,13 +309,18 @@ configs:
   - conditions: []
     type: header
     name: Home
-    path: "/"
+    path: https://repacman.bio-ron.com
     link_type: header
   - name: Reports
     link_type: reports
   - name: Forms
     link_type: forms
-  updated_at: 2024-05-24 15:52:30.198504000 +02:00
+  - conditions: []
+    type: header
+    name: Google
+    path: https://www.google.com/
+    link_type: header
+  updated_at: 2025-03-17 11:28:43.321935000 +01:00
 - key: resources.assembly.columns.order
   value:
   - id
@@ -305,19 +338,37 @@ configs:
   - batch_products
   - batch_packagings
   updated_at: 2025-02-26 20:47:52.416012000 +01:00
+- key: resources.family.columns.order
+  value:
+  - id
+  - name
+  - composition
+  - components
+  - additives
+  - dosage
+  - claims
+  - instructions
+  - tht_months
+  - manufacturer_code
+  - bio
+  - is_batch
+  - updated_at
+  - created_at
+  - total_assembly_weight_in_kg_scalar
+  updated_at: 2025-03-17 07:52:01.302933000 +01:00
 - key: resources.order
   value:
   - family
   - assembly
   - product
-  - batch_packaging
-  - batch
-  - batch_product
   - bag
   - plant
   - label
   - printed
-  updated_at: 2025-02-26 20:18:46.048612000 +01:00
+  - batch
+  - batch_output
+  - batch_input
+  updated_at: 2025-03-17 09:23:23.391049000 +01:00
 - key: resources.plant.columns.order
   value:
   - id

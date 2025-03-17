@@ -244,6 +244,7 @@ GEM
     reline (0.6.0)
       io-console (~> 0.5)
     rexml (3.4.1)
+    ruby-units (4.1.0)
     rubyzip (2.4.1)
     securerandom (0.4.1)
     selenium-webdriver (4.29.1)
@@ -309,6 +310,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 7)
+  ruby-units
   selenium-webdriver
   slim-rails
   stimulus-rails
