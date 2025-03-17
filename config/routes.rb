@@ -14,11 +14,6 @@ Rails.application.routes.draw do
 
   resources :batches
   resources :assemblies
-  # resources :families
-  # resources :labels
-  # resources :plants
-  # resources :bags
-  # resources :products
 
   mount Motor::Admin => '/admin'
   root 'home#home'

@@ -1,9 +1,6 @@
 - content_for :title do
   | Producties
 
-- if notice
-  p style="color: green" = notice
-
 - content_for :menu do
   = link_to "Nieuwe productie", new_batch_path, class: "btn"
 

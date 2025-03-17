@@ -47,14 +47,14 @@ class BatchInputsController < ApplicationController
       products = Product.includes(:family).where(family:)
       # render turbo_stream: turbo_stream.replace(@batch_input, partial: "batches/batch_input_form", locals: { batch_input: @batch_input, products: })
       # send a flash feedback message with turbo_stream, append it to the flash container
-      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Batch input was successfully updated." }) +
+      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Updated.", type: :notice }) +
                            turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_input.batch })
     else
       # render :edit, status: :unprocessable_entity
       # add some alert?
       family = @batch_input.batch.family.children
       products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.replace(@batch_input, partial: "batches/batch_input_form", locals: { batch_input: @batch_input, products: }) +
+      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Update failed.", type: :alert }) +
                            turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_input.batch })
     end
   end

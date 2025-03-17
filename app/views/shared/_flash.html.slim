@@ -1,1 +1,3 @@
-flash-message #{message}
+flash-message data-controller="flash" class=type
+  button.close-button data-action="flash#dismiss" &times;
+  span.message = message

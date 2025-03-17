@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.36
-file_version: 2025-03-17 10:28:43.321935000 Z
+file_version: 2025-03-17 21:48:15.313957000 Z
 resources:
 - name: assembly
   preferences:
@@ -71,7 +71,8 @@ resources:
     - access_type: hidden
       name: created_at
     custom_sql: SELECT `bags`.* FROM `bags` ORDER BY name
-  updated_at: 2024-05-24 08:38:07.145125000 +02:00
+    display_name: Verpakkingen
+  updated_at: 2025-03-17 22:47:58.063624000 +01:00
 - name: batch
   preferences:
     columns:
@@ -156,7 +157,8 @@ resources:
 - name: plant
   preferences:
     icon: building-factory-2
-  updated_at: 2024-05-23 14:11:31.692638000 +02:00
+    display_name: Vestigingen
+  updated_at: 2025-03-17 22:48:04.791700000 +01:00
 - name: printed
   preferences:
     icon: printer
@@ -204,7 +206,8 @@ resources:
       name: xml_exported_at_not_nil
     - visible: false
       name: xml_exported_at_nil
-  updated_at: 2025-02-06 11:39:11.026760000 +01:00
+    display_name: Etiketten
+  updated_at: 2025-03-17 22:48:15.313957000 +01:00
 - name: product
   preferences:
     icon: box
@@ -216,7 +219,7 @@ resources:
     - name: name
       display_name: Name
       column_type: string
-      access_type: read_only
+      access_type: hidden
       virtual: true
       format: {}
       validators: []
@@ -224,12 +227,44 @@ resources:
     - name: weight_in_kg
       display_name: weight_in_kg
       column_type: string
-      access_type: read_write
+      access_type: hidden
       virtual: true
       format: {}
       validators: []
+      description: ''
+    - access_type: hidden
+      reference:
+        name: plant
+        display_name: Plant
+        model_name: plant
+        reference_type: belongs_to
+        foreign_key: plant_id
+        primary_key: id
+        options: {}
+        polymorphic:
+        virtual: false
+      name: plant_id
+    - access_type: hidden
+      reference:
+        name: family
+        display_name: Family
+        model_name: family
+        reference_type: belongs_to
+        foreign_key: family_id
+        primary_key: id
+        options: {}
+        polymorphic:
+        virtual: false
+      name: family_id
+    - access_type: hidden
+      name: id
+    - access_type: hidden
+      name: print_label_repack
+    - access_type: hidden
+      name: label_background_url
     display_column: name
-  updated_at: 2025-03-17 08:27:48.933791000 +01:00
+    display_name: Producten
+  updated_at: 2025-03-17 22:47:51.735621000 +01:00
 - name: production/batch
   preferences:
     display_name: 'P: Batches'

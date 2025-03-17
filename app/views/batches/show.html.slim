@@ -5,10 +5,6 @@
   = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
   = button_to "Wis", @batch, method: :delete
 
-#flashes
-  - if notice
-    p style="color: green" = notice
-
 batch-card
   cols3
     batch-produced-at = l(@batch.produced_at, format: :short)
