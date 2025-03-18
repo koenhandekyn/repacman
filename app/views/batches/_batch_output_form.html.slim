@@ -2,13 +2,12 @@
   = form_with(model: batch_output) do |form|
     = form.hidden_field :batch_id
     batch-output
-      = form.collection_select :product_id, products, :id, :name
-      = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right"
-      = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid
+      = form.collection_select :product_id, products, :id, :name, id: dom_id(batch_output, :product_id)
+      = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right", id: dom_id(batch_output, :quantity), required: true
+      = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid, id: dom_id(batch_output, :batch_uid)
       actions
         = form.submit (batch_output.persisted? ? "Bewaar" : "Voe toe"), data: { disable_with: "Bewaren..." }
         - if batch_output.persisted?
-          / = button_to "Wis", batch_output, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
           = link_to "Wis", batch_output, data: { turbo_method: :delete }, class: "btn btn-danger"
         - else
           div

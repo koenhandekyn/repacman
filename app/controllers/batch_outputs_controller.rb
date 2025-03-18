@@ -1,4 +1,5 @@
 class BatchOutputsController < ApplicationController
+  include TurboStreamBatchForms
   before_action :set_batch_output, only: %i[ show edit update destroy ]
 
   # GET /batch_outputs
@@ -24,38 +25,35 @@ class BatchOutputsController < ApplicationController
     @batch = Batch.find(batch_output_params[:batch_id])
     @batch_output = BatchOutput.new(batch_output_params.merge(batch_uid: @batch.batch_uid))
 
-    if @batch_output.save
-      # redirect_to @batch_output.batch, notice: "Batch output was successfully created."
-      family = @batch_output.batch.family
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.append("batch_outputs", partial: "batches/batch_output_form", locals: { batch_output: @batch_output, products: }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_output.batch })
-    else
-      # TODO: render error message with turbo_stream
-      # render :new, status: :unprocessable_entity
-      # show error message
-      family = @batch_output.batch.family
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.append("batch_outputs", partial: "batches/batch_output_form", locals: { batch_output: @batch_output, products: }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_output.batch })
-    end
+    append = @batch_output.save
+
+    # Inlined render_batch_output_form
+    locals = {
+      batch_output: @batch_output,
+      products: products(family: @batch_output.batch.family)
+    }
+
+    render_form_with_balances(
+      (append ? "batch_outputs" : "new_batch_output"),
+      @batch_output.batch,
+      partial: "batches/batch_output_form",
+      locals:,
+      append:
+    )
   end
 
   # PATCH/PUT /batch_outputs/1
   def update
     if @batch_output.update(batch_output_params)
-      # redirect_to @batch_output.batch, notice: "Batch output was successfully updated.", status: :see_other
-      family = @batch_output.batch.family
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Updated.", type: :notice }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_output.batch })
+      turbo_stream_actions(
+        send_flash("Updated.", :notice),
+        update_balance(@batch_output.batch)
+      )
     else
-      # render :edit, status: :unprocessable_entity
-      # add some alert?
-      family = @batch_output.batch.family
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Update failed.", type: :alert }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_output.batch })
+      turbo_stream_actions(
+        send_flash("Update failed.", :alert),
+        update_balance(@batch_output.batch)
+      )
     end
   end
 
@@ -63,8 +61,10 @@ class BatchOutputsController < ApplicationController
   def destroy
     batch = @batch_output.batch
     @batch_output.destroy!
-    render turbo_stream: turbo_stream.remove(@batch_output) +
-                         turbo_stream.update("balances", partial: "batches/balances", locals: { batch: })
+    turbo_stream_actions(
+      turbo_stream.remove(@batch_output),
+      update_balance(batch)
+    )
   end
 
   private

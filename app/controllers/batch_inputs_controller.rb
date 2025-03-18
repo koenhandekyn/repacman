@@ -1,4 +1,5 @@
 class BatchInputsController < ApplicationController
+  include TurboStreamBatchForms
   before_action :set_batch_input, only: %i[ show edit update destroy ]
 
   # GET /batch_inputs
@@ -23,39 +24,34 @@ class BatchInputsController < ApplicationController
   def create
     @batch_input = BatchInput.new(batch_input_params)
 
-    if @batch_input.save
-      # redirect_to @batch_input.batch, notice: "Batch input was successfully created."
-      family = @batch_input.batch.family.children
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.append("batch_inputs", partial: "batches/batch_input_form", locals: { batch_input: @batch_input, products: }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_input.batch })
-    else
-      # render :new, status: :unprocessable_entity
-      # add some alert?
-      family = @batch_input.batch.family.children
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.replace("new_batch_input", partial: "batches/batch_input_form", locals: { batch_input: @batch_input, products: }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_input.batch })
-    end
+    append = @batch_input.save
+
+    locals = {
+      batch_input: @batch_input,
+      products: products(family: @batch_input.batch.family)
+    }
+
+    render_form_with_balances(
+      (append ? "batch_inputs" : "new_batch_input"),
+      @batch_input.batch,
+      partial: "batches/batch_input_form",
+      locals:,
+      append:
+    )
   end
 
   # PATCH/PUT /batch_inputs/1
   def update
     if @batch_input.update(batch_input_params)
-      # redirect_to @batch_input.batch, notice: "Batch input was successfully updated.", status: :see_other
-      family = @batch_input.batch.family.children
-      products = Product.includes(:family).where(family:)
-      # render turbo_stream: turbo_stream.replace(@batch_input, partial: "batches/batch_input_form", locals: { batch_input: @batch_input, products: })
-      # send a flash feedback message with turbo_stream, append it to the flash container
-      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Updated.", type: :notice }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_input.batch })
+      turbo_stream_actions(
+        send_flash("Updated.", :notice),
+        update_balance(@batch_input.batch)
+      )
     else
-      # render :edit, status: :unprocessable_entity
-      # add some alert?
-      family = @batch_input.batch.family.children
-      products = Product.includes(:family).where(family:)
-      render turbo_stream: turbo_stream.append("flashes", partial: "shared/flash", locals: { message: "Update failed.", type: :alert }) +
-                           turbo_stream.update("balances", partial: "batches/balances", locals: { batch: @batch_input.batch })
+      turbo_stream_actions(
+        send_flash("Update failed.", :alert),
+        update_balance(@batch_input.batch)
+      )
     end
   end
 
@@ -63,9 +59,10 @@ class BatchInputsController < ApplicationController
   def destroy
     batch = @batch_input.batch
     @batch_input.destroy!
-    # redirect_to batch, notice: "Batch input was successfully destroyed.", status: :see_other
-    render turbo_stream: turbo_stream.remove(@batch_input) +
-                         turbo_stream.update("balances", partial: "batches/balances", locals: { batch: })
+    turbo_stream_actions(
+      turbo_stream.remove(@batch_input),
+      update_balance(batch)
+    )
   end
 
   private

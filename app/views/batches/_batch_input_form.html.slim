@@ -3,7 +3,7 @@
     = form.hidden_field :batch_id
     batch-input
       = form.collection_select :product_id, products, :id, :name, prompt: "Select Product", id: dom_id(batch_input, :product_id)
-      = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right", id: dom_id(batch_input, :quantity)
+      = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right", id: dom_id(batch_input, :quantity), required: true
       = form.text_field :batch_uid, placeholder: "Batch", id: dom_id(batch_input, :batch_uid)
       actions
         = form.submit (batch_input.persisted? ? "Bewaar" : "Voeg toe")

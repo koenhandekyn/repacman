@@ -11,8 +11,6 @@ main {
   background-color: rgba(0, 65, 4, 0.1);
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: center; */
   margin-top: 2em;
   max-width: 60rem;
   margin-left: auto;
@@ -21,7 +19,6 @@ main {
   border-right: 1px solid rgb(0, 65, 4);
   min-height: calc(100vh - 10em);
   padding: 1rem;
-  /* background-color: limegreen; */
 }
 
 #flashes {
@@ -32,7 +29,6 @@ main {
   z-index: 1000;
 }
 
-/* Flash message styling */
 flash-message {
   display: block;
   padding: 1rem;
@@ -42,7 +38,6 @@ flash-message {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease-in;
   transition: opacity 0.5s ease-out;
-  /* Add position relative for absolute positioning of children */
   position: relative;
   &.notice {
     background-color: #d4edda;
@@ -54,7 +49,6 @@ flash-message {
     color: #721c24;
   }
 }
-
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(3rem); }

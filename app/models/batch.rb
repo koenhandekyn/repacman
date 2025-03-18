@@ -45,7 +45,7 @@ class Batch < ApplicationRecord
   end
 
   def total_weight_difference_in_kg_io
-    total_weight_outputs_in_kg_f - total_weight_outputs_in_kg_f
+    total_weight_outputs_in_kg_f - total_weight_inputs_in_kg_f
   end
 
   def total_weight_difference_in_kg_ib
