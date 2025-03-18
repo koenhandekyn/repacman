@@ -27,18 +27,16 @@ class BatchOutputsController < ApplicationController
 
     append = @batch_output.save
 
-    # Inlined render_batch_output_form
     locals = {
       batch_output: @batch_output,
       products: products(family: @batch_output.batch.family)
     }
 
-    render_form_with_balances(
-      (append ? "batch_outputs" : "new_batch_output"),
-      @batch_output.batch,
-      partial: "batches/batch_output_form",
-      locals:,
-      append:
+    container_id = (append ? "batch_outputs" : "new_batch_output")
+
+    turbo_stream_actions(
+      append_or_update_form(container_id, partial: "batches/batch_output_form", locals:, append:),
+      update_balance(@batch_output.batch)
     )
   end
 

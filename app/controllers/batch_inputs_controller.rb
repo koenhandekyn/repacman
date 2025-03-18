@@ -22,21 +22,23 @@ class BatchInputsController < ApplicationController
 
   # POST /batch_inputs
   def create
-    @batch_input = BatchInput.new(batch_input_params)
+    batch_input = BatchInput.new(batch_input_params)
 
-    append = @batch_input.save
+    append = batch_input.save
+
+    family = batch_input.batch.family.children
+    products = Product.includes(:family).where(family:)
 
     locals = {
-      batch_input: @batch_input,
-      products: products(family: @batch_input.batch.family)
+      batch_input: batch_input,
+      products:
     }
 
-    render_form_with_balances(
-      (append ? "batch_inputs" : "new_batch_input"),
-      @batch_input.batch,
-      partial: "batches/batch_input_form",
-      locals:,
-      append:
+    container_id = (append ? "batch_inputs" : "new_batch_input")
+
+    turbo_stream_actions(
+      append_or_update_form(container_id, partial: "batches/batch_input_form", locals:, append:),
+      update_balance(batch_input.batch)
     )
   end
 
