@@ -1,0 +1,21 @@
+= form_with(model: printed) do |form|
+  - if printed.errors.any?
+    div[style="color: red"]
+      h2
+        = pluralize(printed.errors.count, "error")
+        |  prohibited this printed from being saved:
+      ul
+        - printed.errors.each do |error|
+          li
+            = error.full_message
+  div
+    = form.label :itemCode, style: "display: block"
+    = form.text_field :itemCode
+  div
+    = form.label :Batch, style: "display: block"
+    = form.text_field :Batch
+  div
+    = form.label :XMLExported, style: "display: block"
+    = form.text_area :XMLExported
+  div
+    = form.submit
