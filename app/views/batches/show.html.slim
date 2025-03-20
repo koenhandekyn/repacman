@@ -9,7 +9,7 @@ batch-card
   cols3
     batch-produced-at = l(@batch.produced_at, format: :short)
     batch-family.title data-family-id=@batch.family_id = @batch.family.name
-    batch-weight = "#{number_with_precision(@batch.weight, precision: 2, delimiter: ' ')} kg"
+    batch-weight = @batch.weight_base
   batch-uid.center.mt
     == Barby::Code128B.new(@batch.batch_uid).to_html
     pre.barby-barcode = @batch.batch_uid
@@ -20,10 +20,11 @@ cols2
     - @batch.family.assemblies.each do |assembly|
       ingredient-card.grid.border-bottom.mb style="grid-template-columns: auto 4rem 4rem 7rem"
         ingredient-name = assembly.child.name
-        ingredient-fraction.text-right = assembly.fraction
-        ingredient-fraction-perc.text-right = number_to_percentage(assembly.fraction_f * 100, precision: 0)
+        ingredient-fraction.text-right = assembly.weight_base
+        ingredient-fraction-perc.text-right = number_to_percentage(assembly.fraction.scalar * 100, precision: 0)
         ingredient-weight.text-right
-          = "#{number_with_precision(assembly.fraction_of_weight_f(@batch.weight), precision: 3, delimiter: ' ')} kg"
+          / = "#{number_with_precision(assembly.fraction_of_weight_f(@batch.weight), precision: 3, delimiter: ' ')} #{@batch.weight_base.units}"
+          = assembly.fraction_of_weight(@batch.weight).to_s
 
   div
     = turbo_frame_tag "balances" do

@@ -3,16 +3,21 @@ div
   weights-overview.flex-col
     weights-row.input.grid.border-bottom.mb
       label Inputs
-      weight.text-right #{number_with_precision(batch.total_weight_inputs_base_f, precision: 3, delimiter: ' ')} kg
+      / weight.text-right #{number_with_precision(batch.total_weight_inputs_base_f, precision: 3, delimiter: ' ')} #{batch.weight_base.units}
+      weight.text-right = batch.total_weight_inputs_base
     weights-row.output.grid.border-bottom.mb
       label Outputs
-      weight.text-right #{number_with_precision(batch.total_weight_outputs_base_f, precision: 3, delimiter: ' ')} kg
+      / weight.text-right #{number_with_precision(batch.total_weight_outputs_base_f, precision: 3, delimiter: ' ')} #{batch.weight_base.units}
+      weight.text-right = batch.total_weight_outputs_base
     weights-row.difference.grid.border-bottom.mb
       label Input - Output
-      weight.text-right #{number_with_precision(batch.total_weight_difference_base_io, precision: 3, delimiter: ' ')} kg
+      / weight.text-right #{number_with_precision(batch.total_weight_difference_base_io, precision: 3, delimiter: ' ')} #{batch.weight_base.units}
+      weight.text-right = batch.total_weight_difference_base_io
     weights-row.difference.grid.border-bottom.mb
       label Input - Batch
-      weight.text-right #{number_with_precision(batch.total_weight_difference_base_ib, precision: 3, delimiter: ' ')} kg
+      / weight.text-right #{number_with_precision(batch.total_weight_difference_base_ib, precision: 3, delimiter: ' ')} #{batch.weight_base.units}
+      weight.text-right = batch.total_weight_difference_base_ib
     weights-row.difference.grid.border-bottom.mb
       label Output - Batch
-      weight.text-right #{number_with_precision(batch.total_weight_difference_base_ob, precision: 3, delimiter: ' ')} kg
+      / weight.text-right #{number_with_precision(batch.total_weight_difference_base_ob, precision: 3, delimiter: ' ')} #{batch.weight_base.units}
+      weight.text-right = batch.total_weight_difference_base_ob
