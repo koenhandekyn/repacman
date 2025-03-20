@@ -14,7 +14,7 @@ class BatchInput < ApplicationRecord
   belongs_to :batch
   belongs_to :product
 
-  def weight_in_kg
-    self.quantity * self.product.weight_in_kg
+  def weight_base
+    self.quantity * self.product.weight_base
   end
 end

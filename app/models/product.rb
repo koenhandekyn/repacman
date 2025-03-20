@@ -27,7 +27,7 @@ class Product < ApplicationRecord
     "#{family.name} (#{weight})"
   end
 
-  def weight_in_kg
+  def weight_base
     Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
   end
 

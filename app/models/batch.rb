@@ -20,39 +20,39 @@ class Batch < ApplicationRecord
   validates :produced_at, presence: true
   validates :weight, presence: true, numericality: { greater_than: 0 }
 
-  def weight_in_kg
+  def weight_base
     Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
   end
 
-  def weight_in_kg_f
-    weight_in_kg.respond_to?(:scalar) ? weight_in_kg.scalar.to_f : weight_in_kg.to_f
+  def weight_base_f
+    weight_base.respond_to?(:scalar) ? weight_base.scalar.to_f : weight_base.to_f
   end
 
-  def total_weight_inputs_in_kg
-    batch_inputs.map(&:weight_in_kg).sum
+  def total_weight_inputs_base
+    batch_inputs.map(&:weight_base).sum
   end
 
-  def total_weight_inputs_in_kg_f
-    total_weight_inputs_in_kg.respond_to?(:scalar) ? total_weight_inputs_in_kg.scalar.to_f : total_weight_inputs_in_kg.to_f
+  def total_weight_inputs_base_f
+    total_weight_inputs_base.respond_to?(:scalar) ? total_weight_inputs_base.scalar.to_f : total_weight_inputs_base.to_f
   end
 
-  def total_weight_outputs_in_kg
-    batch_outputs.map(&:weight_in_kg).sum
+  def total_weight_outputs_base
+    batch_outputs.map(&:weight_base).sum
   end
 
-  def total_weight_outputs_in_kg_f
-    total_weight_outputs_in_kg.respond_to?(:scalar) ? total_weight_outputs_in_kg.scalar.to_f : total_weight_outputs_in_kg.to_f
+  def total_weight_outputs_base_f
+    total_weight_outputs_base.respond_to?(:scalar) ? total_weight_outputs_base.scalar.to_f : total_weight_outputs_base.to_f
   end
 
-  def total_weight_difference_in_kg_io
-    total_weight_outputs_in_kg_f - total_weight_inputs_in_kg_f
+  def total_weight_difference_base_io
+    total_weight_outputs_base_f - total_weight_inputs_base_f
   end
 
-  def total_weight_difference_in_kg_ib
-    total_weight_inputs_in_kg_f - weight_in_kg_f
+  def total_weight_difference_base_ib
+    total_weight_inputs_base_f - weight_base_f
   end
 
-  def total_weight_difference_in_kg_ob
-    total_weight_outputs_in_kg_f - weight_in_kg_f
+  def total_weight_difference_base_ob
+    total_weight_outputs_base_f - weight_base_f
   end
 end

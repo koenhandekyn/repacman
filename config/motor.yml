@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.36
-file_version: 2025-03-17 21:48:15.313957000 Z
+file_version: 2025-03-20 07:04:42.817694000 Z
 resources:
 - name: assembly
   preferences:
@@ -54,8 +54,8 @@ resources:
       format: {}
       validators: []
       description: Aandeel in het totale gewicht van de ingredienten
-    - name: weight_in_kg
-      display_name: weight_in_kg
+    - name: weight_base
+      display_name: weight_base
       column_type: string
       access_type: read_only
       virtual: true
@@ -63,7 +63,7 @@ resources:
       validators: []
       description: Het gewicht in kg zoals verwerkt
     icon: abacus
-  updated_at: 2025-03-17 08:39:22.459701000 +01:00
+  updated_at: 2025-03-20 08:04:42.457000000 +01:00
 - name: bag
   preferences:
     icon: paper-bag
@@ -365,9 +365,9 @@ configs:
   - weight
   - updated_at
   - created_at
-  - fractie
-  - name
-  updated_at: 2025-03-12 16:53:18.215469000 +01:00
+  - fraction
+  - weight_base
+  updated_at: 2025-03-20 08:04:42.817694000 +01:00
 - key: resources.batch.associations.order
   value:
   - batch_products

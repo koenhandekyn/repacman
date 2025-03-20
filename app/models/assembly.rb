@@ -18,7 +18,9 @@ class Assembly < ApplicationRecord
   end
 
   def fraction
-    weight_in_kg / parent.total_assembly_weight_in_kg
+    weight_base / parent.total_assembly_weight_base
+  rescue
+    0
   end
 
   def fraction_f
@@ -33,8 +35,14 @@ class Assembly < ApplicationRecord
     fraction_of_weight(weight).respond_to?(:scalar) ? fraction_of_weight(weight).scalar.to_f : fraction_of_weight(weight).to_f
   end
 
-  def weight_in_kg
-    Unit.new(weight).to("kg")
+  def weight_base
+    if Unit.new(weight).units.blank?
+      Unit.new("#{weight} kg").to("kg")
+    else
+      Unit.new(weight).base
+    end
+  rescue
+    Unit.new("0 kg").to("kg")
   end
 
   alias :to_s :name

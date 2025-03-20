@@ -26,15 +26,15 @@ class Family < ApplicationRecord
   scope :bio, -> { where(bio: true) }
   scope :non_bio, -> { where(bio: false) }
 
-  def total_assembly_weight_in_kg
-    assemblies.map(&:weight_in_kg).sum rescue Unit.new("0 kg")
+  def total_assembly_weight_base
+    assemblies.map(&:weight_base).sum rescue Unit.new("0 kg")
   end
 
-  def total_assembly_weight_in_kg_f
-    if total_assembly_weight_in_kg.respond_to? :scalar
-      total_assembly_weight_in_kg.scalar.to_f
+  def total_assembly_weight_base_f
+    if total_assembly_weight_base.respond_to? :scalar
+      total_assembly_weight_base.scalar.to_f
     else
-      total_assembly_weight_in_kg.to_f
+      total_assembly_weight_base.to_f
     end
   end
 end
