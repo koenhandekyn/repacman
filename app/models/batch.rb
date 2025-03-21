@@ -53,13 +53,19 @@ class Batch < ApplicationRecord
 
   def total_weight_difference_base_io
     total_weight_outputs_base - total_weight_inputs_base
+  rescue
+    total_weight_outputs_base.scalar - total_weight_inputs_base.scalar
   end
 
   def total_weight_difference_base_ib
-    total_weight_inputs_base - weight_base
+    total_weight_inputs_base.scalar - weight_base.scalar
+  rescue
+    total_weight_inputs_base.scalar - weight_base.scalar
   end
 
   def total_weight_difference_base_ob
-    total_weight_outputs_base - weight_base
+    total_weight_outputs_base.scalar - weight_base.scalar
+  rescue
+    total_weight_outputs_base.scalar - weight_base.scalar
   end
 end
