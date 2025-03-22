@@ -24,7 +24,7 @@ cols2
         ingredient-fraction-perc.text-right = number_to_percentage(assembly.fraction.scalar * 100, precision: 0)
         ingredient-weight.text-right
           / = "#{number_with_precision(assembly.fraction_of_weight_f(@batch.weight), precision: 3, delimiter: ' ')} #{@batch.weight_base.units}"
-          = assembly.fraction_of_weight(@batch.weight).to_s
+          = assembly.fraction_of_weight(@batch.weight_base).to_s
 
   div
     = turbo_frame_tag "balances" do
