@@ -31,41 +31,29 @@ class Batch < ApplicationRecord
     Unit.new("0 kg").to("kg")
   end
 
-  # def weight_base_f
-  #   weight_base.respond_to?(:scalar) ? weight_base.scalar.to_f : weight_base.to_f
-  # end
-
   def total_weight_inputs_base
-    batch_inputs.map(&:weight_base).sum
+    sum = batch_inputs.map(&:weight_base).sum
+    sum == 0 ? Unit.new("0 kg") : sum
+  rescue
+    Unit.new("0 kg").to("kg")
   end
-
-  # def total_weight_inputs_base_f
-  #   total_weight_inputs_base.respond_to?(:scalar) ? total_weight_inputs_base.scalar.to_f : total_weight_inputs_base.to_f
-  # end
 
   def total_weight_outputs_base
-    batch_outputs.map(&:weight_base).sum
+    sum = batch_outputs.map(&:weight_base).sum
+    sum == 0 ? Unit.new("0 kg") : sum
+  rescue
+    Unit.new("0 kg").to("kg")
   end
-
-  # def total_weight_outputs_base_f
-  #   total_weight_outputs_base.respond_to?(:scalar) ? total_weight_outputs_base.scalar.to_f : total_weight_outputs_base.to_f
-  # end
 
   def total_weight_difference_base_io
     total_weight_outputs_base - total_weight_inputs_base
-  rescue
-    total_weight_outputs_base.scalar - total_weight_inputs_base.scalar
   end
 
   def total_weight_difference_base_ib
     total_weight_inputs_base.scalar - weight_base.scalar
-  rescue
-    total_weight_inputs_base.scalar - weight_base.scalar
   end
 
   def total_weight_difference_base_ob
-    total_weight_outputs_base.scalar - weight_base.scalar
-  rescue
     total_weight_outputs_base.scalar - weight_base.scalar
   end
 end
