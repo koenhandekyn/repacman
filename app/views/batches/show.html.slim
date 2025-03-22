@@ -18,7 +18,7 @@ cols2
   div
     h2 Ingredients
     - @batch.family.assemblies.each do |assembly|
-      ingredient-card.grid.border-bottom.mb style="grid-template-columns: auto 4rem 4rem 7rem"
+      ingredient-card.grid.border-bottom.mb style="grid-template-columns: auto 7rem 3rem 7rem"
         ingredient-name = assembly.child.name
         ingredient-fraction.text-right = assembly.weight_base
         ingredient-fraction-perc.text-right = number_to_percentage(assembly.fraction.scalar * 100, precision: 0)
