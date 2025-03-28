@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.36
-file_version: 2025-03-20 07:04:42.817694000 Z
+file_version: 2025-03-28 14:00:39.006500000 Z
 resources:
 - name: assembly
   preferences:
@@ -148,7 +148,11 @@ resources:
       name: created_at
     - access_type: hidden
       name: updated_at
-  updated_at: 2025-03-17 07:55:29.394920000 +01:00
+    - column_type: textarea
+      name: components
+    - column_type: textarea
+      name: composition
+  updated_at: 2025-03-28 14:55:44.339028000 +01:00
 - name: label
   preferences:
     icon: tag
@@ -244,8 +248,7 @@ resources:
         polymorphic:
         virtual: false
       name: plant_id
-    - access_type: hidden
-      reference:
+    - reference:
         name: family
         display_name: Family
         model_name: family
@@ -262,9 +265,11 @@ resources:
       name: print_label_repack
     - access_type: hidden
       name: label_background_url
+    - default_value:
+      name: is_input
     display_column: name
     display_name: Producten
-  updated_at: 2025-03-17 22:47:51.735621000 +01:00
+  updated_at: 2025-03-28 15:00:39.006500000 +01:00
 - name: production/batch
   preferences:
     display_name: 'P: Batches'
@@ -355,7 +360,12 @@ configs:
     name: Google
     path: https://www.google.com/
     link_type: header
-  updated_at: 2025-03-17 11:28:43.321935000 +01:00
+  - conditions: []
+    type: header
+    name: Bio-Ron
+    path: https://repacman.bio-ron.com
+    link_type: header
+  updated_at: 2025-03-20 08:13:01.128529000 +01:00
 - key: resources.assembly.columns.order
   value:
   - id

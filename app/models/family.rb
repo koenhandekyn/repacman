@@ -25,6 +25,8 @@ class Family < ApplicationRecord
 
   scope :bio, -> { where(bio: true) }
   scope :non_bio, -> { where(bio: false) }
+  # scope :outputs, -> { where(is_batch: true) }
+  scope :has_children, -> { where(id: Assembly.select(:parent_family_id).distinct) }
 
   def total_assembly_weight_base
     assemblies.map(&:weight_base).sum rescue Unit.new("0 kg")

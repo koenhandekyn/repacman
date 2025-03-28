@@ -20,7 +20,7 @@
   form-field
     label Family
     form-input
-      = form.collection_select :family_id, Family.all, :id, :name
+      = form.collection_select :family_id, Family.has_children, :id, :name
 
   form-field
     label Weight
