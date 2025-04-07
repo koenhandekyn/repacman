@@ -65,7 +65,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "xml_exported_at"
-    t.datetime "best_before_date"
+    t.datetime "label_printed_at"
     t.index ["batch_id"], name: "index_batch_outputs_on_batch_id"
   end
 
@@ -76,6 +76,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
     t.string "weight", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "best_before_date"
     t.index ["batch_uid"], name: "index_batches_on_batch_uid", unique: true
     t.index ["family_id"], name: "index_batches_on_family_id"
   end
