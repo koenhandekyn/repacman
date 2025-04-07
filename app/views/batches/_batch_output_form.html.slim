@@ -7,7 +7,7 @@
       - if batch_output.persisted?
         = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid, id: dom_id(batch_output, :batch_uid)
       - else
-        span.text-muted.font-italic Batch (Auto)
+        span .
       actions
         = form.submit (batch_output.persisted? ? "Bewaar" : "Voe toe"), data: { disable_with: "Bewaren..." }
         - if batch_output.persisted?
