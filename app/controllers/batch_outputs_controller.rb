@@ -23,7 +23,7 @@ class BatchOutputsController < ApplicationController
   # POST /batch_outputs
   def create
     @batch = Batch.find(batch_output_params[:batch_id])
-    @batch_output = BatchOutput.new(batch_output_params.merge(batch_uid: @batch.batch_uid))
+    @batch_output = BatchOutput.new(batch_output_params.merge(batch_uid: "BO#{SecureRandom.random_number(10**10).to_s.rjust(10, '0')}"))
 
     append = @batch_output.save
 

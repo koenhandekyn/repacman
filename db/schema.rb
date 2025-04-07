@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
     t.string "RepackDate"
@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["NicelabelId"], name: "NicelabelId", unique: true
   end
 
-  create_table "assemblies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "assemblies", charset: "utf8mb4", force: :cascade do |t|
     t.integer "parent_family_id", null: false
     t.integer "child_family_id", null: false
     t.string "weight", default: "", null: false
@@ -39,7 +39,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["parent_family_id"], name: "index_assemblies_on_parent_family_id"
   end
 
-  create_table "bags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "bags", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["name"], name: "index_bags_on_name", unique: true
   end
 
-  create_table "batch_inputs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "batch_inputs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "batch_id", null: false
     t.integer "product_id", null: false
     t.integer "quantity", default: 1, null: false
@@ -57,17 +57,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["batch_id"], name: "index_batch_inputs_on_batch_id"
   end
 
-  create_table "batch_outputs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "batch_outputs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "batch_id", null: false
     t.integer "product_id", null: false
     t.integer "quantity", default: 1, null: false
     t.string "batch_uid", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "xml_exported_at"
+    t.datetime "best_before_date"
     t.index ["batch_id"], name: "index_batch_outputs_on_batch_id"
   end
 
-  create_table "batches", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "batches", charset: "utf8mb4", force: :cascade do |t|
     t.datetime "produced_at", null: false
     t.string "batch_uid", default: "", null: false
     t.integer "family_id", null: false
@@ -78,7 +80,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["family_id"], name: "index_batches_on_family_id"
   end
 
-  create_table "families", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "families", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.text "composition"
     t.text "components"
@@ -97,7 +99,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["name"], name: "index_families_on_name", unique: true
   end
 
-  create_table "labels", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "labels", charset: "utf8mb4", force: :cascade do |t|
     t.string "nicelabel_name", null: false
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
@@ -105,7 +107,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["nicelabel_name"], name: "index_labels_on_nicelabel_name", unique: true
   end
 
-  create_table "motor_alert_locks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_alert_locks", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "alert_id", null: false
     t.string "lock_timestamp", null: false
     t.datetime "created_at", null: false
@@ -114,7 +116,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["alert_id"], name: "index_motor_alert_locks_on_alert_id"
   end
 
-  create_table "motor_alerts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_alerts", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "query_id", null: false
     t.string "name", null: false
     t.text "description"
@@ -131,7 +133,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["updated_at"], name: "index_motor_alerts_on_updated_at"
   end
 
-  create_table "motor_api_configs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_api_configs", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
     t.text "preferences", null: false
@@ -143,7 +145,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["name"], name: "motor_api_configs_name_unique_index", unique: true
   end
 
-  create_table "motor_audits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_audits", charset: "utf8mb4", force: :cascade do |t|
     t.string "auditable_id"
     t.string "auditable_type"
     t.string "associated_id"
@@ -165,7 +167,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["user_id", "user_type"], name: "motor_auditable_user_index"
   end
 
-  create_table "motor_configs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_configs", charset: "utf8mb4", force: :cascade do |t|
     t.string "key", null: false
     t.text "value", null: false
     t.datetime "created_at", null: false
@@ -174,7 +176,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["updated_at"], name: "index_motor_configs_on_updated_at"
   end
 
-  create_table "motor_dashboards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_dashboards", charset: "utf8mb4", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
     t.text "preferences", null: false
@@ -187,7 +189,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["updated_at"], name: "index_motor_dashboards_on_updated_at"
   end
 
-  create_table "motor_forms", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_forms", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.text "api_path", null: false
@@ -203,21 +205,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["updated_at"], name: "index_motor_forms_on_updated_at"
   end
 
-  create_table "motor_note_tag_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_note_tag_tags", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "tag_id", null: false
     t.bigint "note_id", null: false
     t.index ["note_id", "tag_id"], name: "motor_note_tags_note_id_tag_id_index", unique: true
     t.index ["tag_id"], name: "index_motor_note_tag_tags_on_tag_id"
   end
 
-  create_table "motor_note_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_note_tags", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "motor_note_tags_name_unique_index", unique: true
   end
 
-  create_table "motor_notes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_notes", charset: "utf8mb4", force: :cascade do |t|
     t.text "body"
     t.bigint "author_id"
     t.string "author_type"
@@ -230,7 +232,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["record_id", "record_type"], name: "motor_notes_record_id_record_type_index"
   end
 
-  create_table "motor_notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_notifications", charset: "utf8mb4", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
     t.bigint "recipient_id", null: false
@@ -244,7 +246,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["record_id", "record_type"], name: "motor_notifications_record_id_record_type_index"
   end
 
-  create_table "motor_queries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_queries", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.text "sql_body", null: false
@@ -258,7 +260,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["updated_at"], name: "index_motor_queries_on_updated_at"
   end
 
-  create_table "motor_reminders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_reminders", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "author_id", null: false
     t.string "author_type", null: false
     t.bigint "recipient_id", null: false
@@ -274,7 +276,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["scheduled_at"], name: "index_motor_reminders_on_scheduled_at"
   end
 
-  create_table "motor_resources", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_resources", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.text "preferences", null: false
     t.datetime "created_at", null: false
@@ -283,7 +285,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["updated_at"], name: "index_motor_resources_on_updated_at"
   end
 
-  create_table "motor_taggable_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_taggable_tags", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "tag_id", null: false
     t.bigint "taggable_id", null: false
     t.string "taggable_type", null: false
@@ -291,14 +293,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["taggable_id", "taggable_type", "tag_id"], name: "motor_polymorphic_association_tag_index", unique: true
   end
 
-  create_table "motor_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "motor_tags", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
   end
 
-  create_table "plants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "plants", charset: "utf8mb4", force: :cascade do |t|
     t.string "streetnr", default: "", null: false
     t.string "zip", default: "", null: false
     t.string "city", default: "", null: false
@@ -310,7 +312,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.index ["name"], name: "index_plants_on_name"
   end
 
-  create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "products", charset: "utf8mb4", force: :cascade do |t|
     t.string "code", null: false
     t.string "weight", default: "", null: false
     t.string "barcode"
@@ -323,6 +325,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_144359) do
     t.boolean "is_active", default: true
     t.boolean "print_label_repack"
     t.string "label_background_url"
+    t.integer "is_input", limit: 1, default: 0
+    t.boolean "is_external", default: false
     t.index ["bag_id"], name: "index_products_on_bag_id"
     t.index ["barcode"], name: "index_products_on_barcode", unique: true
     t.index ["code"], name: "index_products_on_code", unique: true
