@@ -4,7 +4,10 @@
     batch-output
       = form.collection_select :product_id, products, :id, :name, id: dom_id(batch_output, :product_id)
       = form.number_field :quantity, min: 1, placeholder: "Quantity", class: "text-right", id: dom_id(batch_output, :quantity), required: true
-      = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid, id: dom_id(batch_output, :batch_uid)
+      - if batch_output.persisted?
+        = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid, id: dom_id(batch_output, :batch_uid)
+      - else
+        span.text-muted.font-italic Batch (Auto)
       actions
         = form.submit (batch_output.persisted? ? "Bewaar" : "Voe toe"), data: { disable_with: "Bewaren..." }
         - if batch_output.persisted?
