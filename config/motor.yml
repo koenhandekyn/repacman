@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.36
-file_version: 2025-04-07 15:56:00.195068000 Z
+file_version: 2025-04-08 15:28:27.317334000 Z
 resources:
 - name: assembly
   preferences:
@@ -485,9 +485,9 @@ queries:
   tags: []
   updated_at: 2024-05-23 13:27:20.744803000 +02:00
 - id: 3
-  name: Production Labels
-  sql_body: SELECT * FROM production_labels;
-  description:
+  name: Production Labels To Print
+  sql_body: SELECT * FROM production_labels WHERE output_label_printed_at IS NULL;
+  description: SELECT * FROM production_labels WHERE output_label_printed_at IS NULL;
   preferences:
     query_type: sql
     database: primary
@@ -495,7 +495,7 @@ queries:
     visualization_options: {}
     variables: []
   tags: []
-  updated_at: 2025-04-07 17:56:00.195068000 +02:00
+  updated_at: 2025-04-08 17:28:27.317334000 +02:00
 dashboards: []
 forms: []
 alerts: []

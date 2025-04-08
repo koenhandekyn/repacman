@@ -3,38 +3,48 @@ class CreateViewProductionLabels < ActiveRecord::Migration[7.2]
     execute <<-SQL
       CREATE VIEW production_labels AS
       SELECT
-        batch_outputs.id,
-        batch_outputs.batch_id,
-        batch_outputs.product_id,
-        batch_outputs.quantity,
+        -- batch_outputs.id as output_id,
+        batch_outputs.batch_id as batch_id,
+        batch_outputs.product_id as output_product_id,
+        batch_outputs.quantity as output_quantity,
         batch_outputs.batch_uid as output_batch_uid,
-        batch_outputs.xml_exported_at,
-        batch_outputs.label_printed_at,
-        batches.produced_at,
+        batch_outputs.xml_exported_at as output_xml_exported_at,
+        batch_outputs.label_printed_at as output_label_printed_at,
+        batches.produced_at as batch_produced_at,
         batches.batch_uid as batch_uid,
         batches.weight as batch_weight,
-        batches.best_before_date,
-        products.code,
+        batches.best_before_date as batch_best_before_date,
+        products.code as product_code,
         products.weight as product_weight,
-        products.barcode,
-        products.label_id,
-        products.plant_id,
-        products.bag_id,
-        families.name,
-        families.manufacturer_code,
-        families.bio,
-        families.is_batch,
-        families.composition,
-        families.components,
-        families.additives,
-        families.dosage,
+        products.barcode as product_barcode,
+        -- products.label_id,
+        -- products.plant_id,
+        -- products.bag_id,
+        families.name as family_name,
+        families.manufacturer_code as family_manufacturer_code,
+        families.bio as family_bio,
+        -- families.is_batch,
+        families.composition as family_composition,
+        families.components as family_components,
+        families.additives as family_additives,
+        families.dosage as family_dosage,
         families.tht_months,
         families.claims,
-        families.instructions
+        families.instructions,
+        bags.name as bag_name,
+        labels.nicelabel_name as label_name,
+        plants.name as plant_name,
+        plants.zip as plant_zip,
+        plants.city as plant_city,
+        plants.country as plant_country,
+        plants.email as plant_email
       FROM batch_outputs
       LEFT JOIN batches ON batch_outputs.batch_id = batches.id
       LEFT JOIN products ON batch_outputs.product_id = products.id
       LEFT JOIN families ON products.family_id = families.id
+      LEFT JOIN bags ON products.bag_id = bags.id
+      LEFT JOIN plants ON products.plant_id = plants.id
+      LEFT JOIN labels ON products.label_id = labels.id
     SQL
   end
 
@@ -104,3 +114,13 @@ end
 #     t.index ["name"], name: "index_families_on_name", unique: true
 #   end
 # end
+
+#  id         :bigint           not null, primary key
+#  streetnr   :string(255)      default(""), not null
+#  zip        :string(255)      default(""), not null
+#  city       :string(255)      default(""), not null
+#  country    :string(255)      default(""), not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  name       :string(255)
+#  email      :string(255)      default("")
