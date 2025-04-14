@@ -12,7 +12,10 @@ class BatchesController < ApplicationController
 
   # GET /batches/new
   def new
-    @batch = Batch.new(produced_at: Time.zone.now)
+    @batch = Batch.new(
+      produced_at: Time.zone.now,
+      batch_uid: Time.zone.now.strftime("P%y%m%d") + Time.zone.now.seconds_since_midnight.to_i.to_s.rjust(5, '0')
+    )
   end
 
   # GET /batches/1/edit
