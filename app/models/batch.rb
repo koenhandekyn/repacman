@@ -20,6 +20,8 @@ class Batch < ApplicationRecord
   validates :produced_at, presence: true
   validates :weight, presence: true
 
+  before_validation :set_best_before_date, if: :should_recalculate_best_before_date?
+
   def weight_base
     # Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
     if Unit.new(weight).units.blank?
@@ -55,5 +57,17 @@ class Batch < ApplicationRecord
 
   def total_weight_difference_base_ob
     total_weight_outputs_base.scalar - weight_base.scalar
+  end
+
+  def set_best_before_date
+    if produced_at.present? && family&.tht_months.present?
+      self.best_before_date = produced_at + family.tht_months.months
+    else
+      self.best_before_date = nil
+    end
+  end
+
+  def should_recalculate_best_before_date?
+    will_save_change_to_family_id? || will_save_change_to_produced_at?
   end
 end

@@ -56,7 +56,7 @@ class BatchesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def batch_params
-      params.fetch(:batch, { }).permit(:produced_at, :batch_uid, :family_id, :weight)
+      params.fetch(:batch, { }).permit(:produced_at, :batch_uid, :family_id, :weight, :best_before_date)
     end
 end
 

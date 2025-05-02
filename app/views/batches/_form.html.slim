@@ -28,4 +28,9 @@
       = form.text_field :weight
 
   form-field
+    label Best Before Date
+    form-input
+      = form.text_field :best_before_date, value: batch.best_before_date&.strftime('%Y-%m-%d'), readonly: true
+
+  form-field
     = form.submit
