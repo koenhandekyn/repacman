@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_19_055348) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
     t.string "RepackDate"
@@ -50,7 +50,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
   create_table "batch_inputs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "batch_id", null: false
     t.integer "product_id", null: false
-    t.integer "quantity", default: 1, null: false
+    t.decimal "quantity", precision: 10, scale: 3, default: "1.0", null: false
     t.string "batch_uid", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
   create_table "batch_outputs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "batch_id", null: false
     t.integer "product_id", null: false
-    t.integer "quantity", default: 1, null: false
+    t.decimal "quantity", precision: 10, scale: 3, default: "1.0", null: false
     t.string "batch_uid", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -76,7 +76,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
     t.string "weight", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "best_before_date"
+    t.date "best_before_date"
     t.index ["batch_uid"], name: "index_batches_on_batch_uid", unique: true
     t.index ["family_id"], name: "index_batches_on_family_id"
   end
@@ -95,6 +95,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_07_145906) do
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
     t.boolean "bio", default: true
     t.boolean "is_batch"
+    t.string "bio_source"
     t.index ["bio"], name: "index_families_on_bio"
     t.index ["manufacturer_code"], name: "index_families_on_manufacturer_code"
     t.index ["name"], name: "index_families_on_name", unique: true
