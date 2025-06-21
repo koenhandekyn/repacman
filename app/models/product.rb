@@ -26,10 +26,6 @@ class Product < ApplicationRecord
   scope :by_family, ->(family) { includes(:family).where(family: family) }
   scope :sorted_by_weight, -> { sort_by(&:weight_base_scalar).reverse }
 
-  def self.for_family_sorted_by_weight(family)
-    by_family(family).sorted_by_weight
-  end
-
   def name
     "#{family.name} (#{weight})"
   end

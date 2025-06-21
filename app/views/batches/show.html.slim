@@ -53,7 +53,7 @@ hr
 div
   h2 Ingredients
   - @batch.family.assemblies.each do |assembly|
-    - products = Product.for_family_sorted_by_weight(assembly.child)
+    - products = Product.by_family(assembly.child).sorted_by_weight
     - status = @batch.assembly_status(assembly)
     ingredient-card.grid.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem 8rem"
       ingredient-name = assembly.child.name
@@ -76,16 +76,22 @@ div
 / div#batch_inputs
 /   - @batch.batch_inputs.each do |batch_input|
 /     = render "batch_input_form", batch_input:, batch: @batch, products:
-
 / hr
-
 / = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
 
-h2 Outputs
 
-div#batch_outputs
+outputs.grid.border-bottom.align-items-end.mt.mb style="grid-template-columns: auto 8rem 8rem"
   - family = @batch.family
   - products = Product.includes(:family).where(family:)
+  - total_weight_outputs = @batch.total_weight_outputs_base
+  - total_weight_inputs = @batch.total_weight_inputs_base
+  - total_weight_diff = total_weight_outputs - total_weight_inputs
+  div.h2 Outputs
+  output-total-weight.text-right = total_weight_diff
+  output-total-weight.text-right = total_weight_outputs
+
+
+div#batch_outputs
   - @batch.batch_outputs.each do |batch_output|
     = render "batch_output_form", batch_output:, batch: @batch, products:
 hr
