@@ -40,7 +40,7 @@ batch-card
       = l(@batch.produced_at, format: :short)
     batch-best-before
       |> THT:
-      = l(@batch.best_before_date, format: :short)
+      = l(@batch.best_before_date)
     batch-family.title data-family-id=@batch.family_id = @batch.family.name
     batch-weight = @batch.weight_base
   batch-uid.center.mt
@@ -113,7 +113,7 @@ hr
 
 = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch, products:
 
-= turbo_frame_tag "balances" do
+/ = turbo_frame_tag "balances" do
   = render "balances", batch: @batch
 
 h2 Batch Details
