@@ -59,7 +59,10 @@ div
       ingredient-name = assembly.child.name
       ingredient-fraction-perc.text-right.text-light = number_to_percentage(assembly.fraction.scalar * 100, precision: 2)
       ingredient-total-weight.text-right style=(status[:color] ? "color: #{status[:color]}" : nil)
-        = status[:diff]
+        - if status[:diff].scalar > 0
+          | +
+        - if status[:diff].scalar != 0
+          = status[:diff]
       ingredient-weight.text-right
         = assembly.fraction_of_weight(@batch.weight_base).to_s
 
@@ -69,6 +72,17 @@ div
         - batch_input.quantity = nil unless batch_input.persisted?
         = render "batch_input_form", batch_input:, batch: @batch, product:
       / total weight of all products
+  input-totals.grid.align-items-end.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem"
+    - total_weight_diff = @batch.family.assemblies.sum { |assembly| @batch.assembly_status(assembly)[:diff] }
+    - color = total_weight_diff.scalar > 0 ? "yellow" : (total_weight_diff.scalar < 0 ? "red" : nil)
+    input-totals-title.h2 Totaal ingredienten
+    input-totals-weight-diff.text-right style="color: #{color}"
+      - if total_weight_diff.scalar > 0
+        | +
+      - if total_weight_diff.scalar != 0
+        = total_weight_diff
+    input-totals-weight.text-right
+      = @batch.family.assemblies.sum { |assembly| assembly.fraction_of_weight(@batch.weight_base) }
 
 - products = Product.includes(:family).where(family:)
 
@@ -86,8 +100,9 @@ outputs.grid.border-bottom.align-items-end.mt.mb style="grid-template-columns: a
   - total_weight_outputs = @batch.total_weight_outputs_base
   - total_weight_inputs = @batch.total_weight_inputs_base
   - total_weight_diff = total_weight_outputs - total_weight_inputs
+  - color = total_weight_diff.scalar > 0 ? "yellow" : (total_weight_diff.scalar < 0 ? "red" : nil)
   div.h2 Outputs
-  output-total-weight.text-right = total_weight_diff
+  output-total-weight.text-right style="color: #{color}" = total_weight_diff
   output-total-weight.text-right = total_weight_outputs
 
 

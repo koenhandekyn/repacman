@@ -15,6 +15,7 @@ class BatchInput < ApplicationRecord
   belongs_to :product
 
   def weight_base
-    self.quantity * self.product.weight_base
+    return Unit.new("0 kg") if quantity.nil? || product.nil?
+    quantity * product.weight_base
   end
 end
