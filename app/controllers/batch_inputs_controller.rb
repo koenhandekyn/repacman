@@ -27,17 +27,17 @@ class BatchInputsController < ApplicationController
     append = batch_input.save
 
     family = batch_input.batch.family.children
-    products = Product.includes(:family).where(family:)
+    product = batch_input.product
 
     locals = {
       batch_input: batch_input,
-      products:
+      product:
     }
 
-    container_id = (append ? "batch_inputs" : "new_batch_input")
+    container_id = "input_product_#{product.id}"
 
     turbo_stream_actions(
-      append_or_update_form(container_id, partial: "batches/batch_input_form", locals:, append:),
+      turbo_stream.replace(container_id, partial: "batches/batch_input_form", locals: ),
       update_balance(batch_input.batch)
     )
   end
@@ -60,9 +60,18 @@ class BatchInputsController < ApplicationController
   # DELETE /batch_inputs/1
   def destroy
     batch = @batch_input.batch
+    product = @batch_input.product
     @batch_input.destroy!
+
+    locals = {
+      batch_input: BatchInput.new(batch: batch, product: product, quantity: nil),
+      product:
+    }
+
+    container_id = "input_product_#{product.id}"
+
     turbo_stream_actions(
-      turbo_stream.remove(@batch_input),
+      turbo_stream.replace(container_id, partial: "batches/batch_input_form", locals: ),
       update_balance(batch)
     )
   end

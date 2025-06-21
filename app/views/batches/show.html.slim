@@ -1,3 +1,31 @@
+css:
+  batch-header {
+    display: grid;
+    grid-template-areas:
+      "produced-at family weight"
+      "best-before family weight"
+      "uid uid uid";
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    batch-produced-at {
+      grid-area: produced-at;
+    }
+    batch-best-before {
+      grid-area: best-before;
+    }
+    batch-family {
+      grid-area: family;
+      text-align: center;
+    }
+    batch-weight {
+      grid-area: weight;
+      text-align: right;
+    }
+    batch-uid {
+      grid-area: uid;
+    }
+  }
+
 - content_for :title do
   a href=batches_path Producties
 
@@ -6,46 +34,67 @@
   = button_to "Wis", @batch, method: :delete
 
 batch-card
-  cols3
-    batch-produced-at = l(@batch.produced_at, format: :short)
+  batch-header
+    batch-produced-at
+      |> Productie:
+      = l(@batch.produced_at, format: :short)
+    batch-best-before
+      |> THT:
+      = l(@batch.best_before_date, format: :short)
     batch-family.title data-family-id=@batch.family_id = @batch.family.name
     batch-weight = @batch.weight_base
   batch-uid.center.mt
     == Barby::Code128B.new(@batch.batch_uid).to_html
     pre.barby-barcode = @batch.batch_uid
 
-cols2
-  div
-    h2 Ingredients
-    - @batch.family.assemblies.each do |assembly|
-      ingredient-card.grid.border-bottom.mb style="grid-template-columns: auto 6rem 4rem 6rem"
-        ingredient-name = assembly.child.name
-        ingredient-fraction.text-right = assembly.weight_base
-        ingredient-fraction-perc.text-right = number_to_percentage(assembly.fraction.scalar * 100, precision: 2)
-        ingredient-weight.text-right
-          / = "#{number_with_precision(assembly.fraction_of_weight_f(@batch.weight), precision: 3, delimiter: ' ')} #{@batch.weight_base.units}"
-          = assembly.fraction_of_weight(@batch.weight_base).to_s
-
-  div
-    = turbo_frame_tag "balances" do
-      = render "balances", batch: @batch
-
 hr
+- family = @batch.family.children
 
-h2 Inputs
-div#batch_inputs
-  - family = @batch.family.children
-  - products = Product.includes(:family).where(family:)
-  - @batch.batch_inputs.each do |batch_input|
-    = render "batch_input_form", batch_input:, batch: @batch, products:
-hr
-= render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
+div
+  h2 Ingredients
+  - @batch.family.assemblies.each do |assembly|
+    - products = Product.for_family_sorted_by_weight(assembly.child)
+    - status = @batch.assembly_status(assembly)
+    ingredient-card.grid.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem 8rem"
+      ingredient-name = assembly.child.name
+      ingredient-fraction-perc.text-right.text-light = number_to_percentage(assembly.fraction.scalar * 100, precision: 2)
+      ingredient-total-weight.text-right style=(status[:color] ? "color: #{status[:color]}" : nil)
+        = status[:diff]
+      ingredient-weight.text-right
+        = assembly.fraction_of_weight(@batch.weight_base).to_s
+
+    ingredient-inputs
+      - products.each do |product|
+        - batch_input = @batch.batch_inputs.find_or_initialize_by(batch: @batch, product:)
+        - batch_input.quantity = nil unless batch_input.persisted?
+        = render "batch_input_form", batch_input:, batch: @batch, product:
+      / total weight of all products
+
+- products = Product.includes(:family).where(family:)
+
+/ h2 Inputs
+/ div#batch_inputs
+/   - @batch.batch_inputs.each do |batch_input|
+/     = render "batch_input_form", batch_input:, batch: @batch, products:
+
+/ hr
+
+/ = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
 
 h2 Outputs
+
 div#batch_outputs
   - family = @batch.family
   - products = Product.includes(:family).where(family:)
   - @batch.batch_outputs.each do |batch_output|
     = render "batch_output_form", batch_output:, batch: @batch, products:
 hr
+
 = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch, products:
+
+= turbo_frame_tag "balances" do
+  = render "balances", batch: @batch
+
+h2 Batch Details
+
+= render "form", batch: @batch

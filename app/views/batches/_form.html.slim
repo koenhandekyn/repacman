@@ -6,31 +6,33 @@
           li = error.full_message
 
   form-field
-    label Batch Code
-    form-input
-      = form.text_field :batch_uid
-    div style="color: red; text-align: left"
-      = batch.errors[:batch_uid].first if batch.errors[:batch_uid].any?
-
-  form-field
-    label Production Datetime
-    form-input
-      = form.datetime_field :produced_at
-
-  form-field
     label Family
     form-input
       = form.collection_select :family_id, Family.has_children, :id, :name
 
-  form-field
-    label Weight
-    form-input
-      = form.text_field :weight
+  cols2
+    form-field
+      label Batch Code
+      form-input
+        = form.text_field :batch_uid
+      div style="color: red; text-align: left"
+        = batch.errors[:batch_uid].first if batch.errors[:batch_uid].any?
 
-  form-field
-    label Best Before Date
-    form-input
-      = form.text_field :best_before_date, value: batch.best_before_date&.strftime('%Y-%m-%d'), readonly: true
+    form-field
+      label Production Datetime
+      form-input
+        = form.datetime_field :produced_at
+
+  cols2
+    form-field
+      label Weight
+      form-input
+        = form.text_field :weight
+
+    form-field
+      label Best Before Date
+      form-input
+        = form.text_field :best_before_date, value: batch.best_before_date&.strftime('%Y-%m-%d'), readonly: true
 
   form-field
     = form.submit

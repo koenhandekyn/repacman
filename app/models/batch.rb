@@ -22,6 +22,9 @@ class Batch < ApplicationRecord
 
   before_validation :set_best_before_date, if: :should_recalculate_best_before_date?
 
+  scope :produced_at_desc, -> { order(produced_at: :desc) }
+  default_scope { produced_at_desc }
+
   def weight_base
     # Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
     if Unit.new(weight).units.blank?
@@ -69,5 +72,9 @@ class Batch < ApplicationRecord
 
   def should_recalculate_best_before_date?
     will_save_change_to_family_id? || will_save_change_to_produced_at?
+  end
+
+  def assembly_status(assembly)
+    assembly.weight_status_in_batch(self)
   end
 end

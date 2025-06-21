@@ -45,6 +45,25 @@ class Assembly < ApplicationRecord
     Unit.new("0 kg").to("kg")
   end
 
+  def weight_difference_in_batch(batch)
+    actual_weight = batch.batch_inputs.joins(:product).where(products: { family: child }).sum(&:weight_base)
+    expected_weight = fraction_of_weight(batch.weight_base)
+    actual_weight - expected_weight
+  rescue
+    Unit.new("0 kg").to("kg")
+  end
+
+  def weight_status_in_batch(batch)
+    diff = weight_difference_in_batch(batch)
+    if diff > 0
+      { color: 'yellow', diff: diff }
+    elsif diff < 0
+      { color: 'red', diff: diff }
+    else
+      { color: nil, diff: diff }
+    end
+  end
+
   alias :to_s :name
   alias :display_name :name
 end

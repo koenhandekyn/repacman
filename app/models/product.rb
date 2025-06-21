@@ -23,12 +23,23 @@ class Product < ApplicationRecord
   belongs_to :plant
   has_many :printeds, foreign_key: "Itemcode", primary_key: "code"
 
+  scope :by_family, ->(family) { includes(:family).where(family: family) }
+  scope :sorted_by_weight, -> { sort_by(&:weight_base_scalar).reverse }
+
+  def self.for_family_sorted_by_weight(family)
+    by_family(family).sorted_by_weight
+  end
+
   def name
     "#{family.name} (#{weight})"
   end
 
   def weight_base
     Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
+  end
+
+  def weight_base_scalar
+    weight_base.scalar
   end
 
   alias :to_s :name
