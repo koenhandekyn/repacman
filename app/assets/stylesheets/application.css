@@ -21,59 +21,6 @@ main {
   padding: 1rem;
 }
 
-#flashes {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  width: 20rem;
-  z-index: 1000;
-}
-
-flash-message {
-  display: block;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.5s ease-in;
-  transition: opacity 0.5s ease-out;
-  position: relative;
-  &.notice {
-    background-color: #d4edda;
-    color: #155724;
-  }
-
-  &.alert {
-    background-color: #f8d7da;
-    color: #721c24;
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(3rem); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-flash-message .close-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.2rem 0.5rem;
-  color: inherit;
-  opacity: 0.7;
-  border-radius: 0.25rem;
-}
-
-flash-message .close-button:hover {
-  opacity: 1;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
 details {
   width: 100%;
   margin-top: 0.5em;
@@ -152,7 +99,8 @@ form {
 form-field {
   display: flex;
   flex-direction: column;
-  margin: 0.5em;
+  /* margin-top: 0.5em; */
+  margin-bottom: 1em;
 }
 
 form-input {
@@ -179,7 +127,7 @@ batch-row {
   }
 }
 
-actions {
+.actions {
   font-size: 0.75em;
   display: flex;
   button,
@@ -300,28 +248,6 @@ cols2 {
   flex-direction: row;
 }
 
-batch-input, batch-output {
-  display: grid;
-  grid-template-columns: 20rem 10rem 10rem 6rem 14rem;
-  input, select {
-    border: 1px solid rgb(0, 65, 4);
-    background-color: rgba(255, 255, 255, 0.5)
-  }
-  & :focus {
-    outline: 4px solid rgb(35, 215, 11);
-    z-index: 1;
-    /* border: 1px solid rgb(35, 215, 11); */
-  }
-  .label-printed-at {
-    text-align: right;
-    font-size: 0.75em;
-    display: flex;
-    /* vertical center */
-    align-items: center;
-    justify-content: flex-end;
-  }
-}
-
 .h2 {
   font-size: 1.5em;
   font-weight: bold;
@@ -331,3 +257,5 @@ batch-input, batch-output {
 .align-items-end {
   align-items: flex-end;
 }
+
+@import "batch_header";

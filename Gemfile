@@ -13,11 +13,14 @@ gem "importmap-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+
+# gem "phlex-rails", "~> 2.3"
+gem "view_component"
 gem "stimulus-rails"
 # App specific
-gem "motor-admin", "~> 0.4"
 gem "slim-rails"
 gem "csv"
+gem "motor-admin", "~> 0.4"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem "barby"

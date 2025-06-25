@@ -8,7 +8,7 @@
         = form.text_field :batch_uid, placeholder: "Batch", value: form.object.batch_uid.presence || form.object.batch.batch_uid, id: dom_id(batch_output, :batch_uid)
       - else
         input type="text" readonly="readonly" placeholder="Auto" value="" disabled="disabled"
-      actions
+      .actions
         = form.submit (batch_output.persisted? ? "Bewaar" : "Voe toe"), data: { disable_with: "Bewaren..." }
         - if batch_output.persisted?
           = link_to "Wis", batch_output, data: { turbo_method: :delete }, class: "btn btn-danger"

@@ -1,0 +1,48 @@
+batch-header {
+  display: grid;
+  grid-template-areas:
+    "produced-at family weight"
+    "best-before family weight"
+    "uid uid uid";
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem;
+  batch-produced-at {
+    grid-area: produced-at;
+  }
+  batch-best-before {
+    grid-area: best-before;
+  }
+  batch-family {
+    grid-area: family;
+    text-align: center;
+  }
+  batch-weight {
+    grid-area: weight;
+    text-align: right;
+  }
+  batch-uid {
+    grid-area: uid;
+  }
+}
+
+batch-input, batch-output {
+  display: grid;
+  grid-template-columns: 20rem 10rem 10rem 6rem 14rem;
+  input, select {
+    border: 1px solid rgb(0, 65, 4);
+    background-color: rgba(255, 255, 255, 0.5)
+  }
+  & :focus {
+    outline: 4px solid rgb(35, 215, 11);
+    z-index: 1;
+    /* border: 1px solid rgb(35, 215, 11); */
+  }
+  .label-printed-at {
+    text-align: right;
+    font-size: 0.75em;
+    display: flex;
+    /* vertical center */
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

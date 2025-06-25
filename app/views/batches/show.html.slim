@@ -1,59 +1,15 @@
-css:
-  batch-header {
-    display: grid;
-    grid-template-areas:
-      "produced-at family weight"
-      "best-before family weight"
-      "uid uid uid";
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.25rem;
-    batch-produced-at {
-      grid-area: produced-at;
-    }
-    batch-best-before {
-      grid-area: best-before;
-    }
-    batch-family {
-      grid-area: family;
-      text-align: center;
-    }
-    batch-weight {
-      grid-area: weight;
-      text-align: right;
-    }
-    batch-uid {
-      grid-area: uid;
-    }
-  }
-
 - content_for :title do
   a href=batches_path Producties
 
 - content_for :menu do
-  = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
+  / = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
   = button_to "Wis", @batch, method: :delete
 
-batch-card
-  batch-header
-    batch-produced-at
-      |> Productie:
-      = l(@batch.produced_at, format: :short)
-    batch-best-before
-      |> THT:
-      = l(@batch.best_before_date)
-    batch-family.title data-family-id=@batch.family_id = @batch.family.name
-    batch-weight = @batch.weight_base
-  batch-uid.center.mt
-    == Barby::Code128B.new(@batch.batch_uid).to_html
-    pre.barby-barcode = @batch.batch_uid
-
-hr
-- family = @batch.family.children
+= render Components::BatchHeader.new(@batch)
 
 div
   h2 Ingredients
   - @batch.family.assemblies.each do |assembly|
-    - products = Product.by_family(assembly.child).sorted_by_weight
     - status = @batch.assembly_status(assembly)
     ingredient-card.grid.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem 8rem"
       ingredient-name = assembly.child.name
@@ -66,12 +22,8 @@ div
       ingredient-weight.text-right
         = assembly.fraction_of_weight(@batch.weight_base).to_s
 
-    ingredient-inputs
-      - products.each do |product|
-        - batch_input = @batch.batch_inputs.find_or_initialize_by(batch: @batch, product:)
-        - batch_input.quantity = nil unless batch_input.persisted?
-        = render "batch_input_form", batch_input:, batch: @batch, product:
-      / total weight of all products
+    = render Components::IngredientInputs.new(assembly: assembly, batch: @batch)
+
   input-totals.grid.align-items-end.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem"
     - total_weight_diff = @batch.family.assemblies.sum { |assembly| @batch.assembly_status(assembly)[:diff] }
     - color = total_weight_diff.scalar > 0 ? "yellow" : (total_weight_diff.scalar < 0 ? "red" : nil)
@@ -84,15 +36,8 @@ div
     input-totals-weight.text-right
       = @batch.family.assemblies.sum { |assembly| assembly.fraction_of_weight(@batch.weight_base) }
 
+- family = @batch.family.children
 - products = Product.includes(:family).where(family:)
-
-/ h2 Inputs
-/ div#batch_inputs
-/   - @batch.batch_inputs.each do |batch_input|
-/     = render "batch_input_form", batch_input:, batch: @batch, products:
-/ hr
-/ = render "batch_input_form", batch_input: @batch.batch_inputs.new, batch: @batch, products:
-
 
 outputs.grid.border-bottom.align-items-end.mt.mb style="grid-template-columns: auto 8rem 8rem"
   - family = @batch.family
@@ -104,7 +49,6 @@ outputs.grid.border-bottom.align-items-end.mt.mb style="grid-template-columns: a
   div.h2 Outputs
   output-total-weight.text-right style="color: #{color}" = total_weight_diff
   output-total-weight.text-right = total_weight_outputs
-
 
 div#batch_outputs
   - @batch.batch_outputs.each do |batch_output|
@@ -119,3 +63,5 @@ hr
 h2 Batch Details
 
 = render "form", batch: @batch
+
+= button_to "Deze batch verwijderen", @batch, method: :delete, class: "btn btn-danger", data: { turbo_confirm: "Weet je zeker dat je deze batch wilt verwijderen?" }

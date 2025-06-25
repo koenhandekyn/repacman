@@ -15,6 +15,6 @@
       batch-produced-at = l(batch.produced_at, format: :short)
       batch-uid = batch.batch_uid
       batch-family = batch.family.name
-      actions.justify-content-right
+      .actions.justify-content-right
         = link_to "Open", batch, class: "btn"
         / = link_to "Edit", edit_batch_path(batch), class: "btn"

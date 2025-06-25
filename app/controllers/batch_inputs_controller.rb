@@ -29,15 +29,10 @@ class BatchInputsController < ApplicationController
     family = batch_input.batch.family.children
     product = batch_input.product
 
-    locals = {
-      batch_input: batch_input,
-      product:
-    }
-
     container_id = "input_product_#{product.id}"
 
     turbo_stream_actions(
-      turbo_stream.replace(container_id, partial: "batches/batch_input_form", locals: ),
+      turbo_stream.replace(container_id, Components::BatchInputForm.new(batch_input:)),
       update_balance(batch_input.batch)
     )
   end
@@ -59,20 +54,14 @@ class BatchInputsController < ApplicationController
 
   # DELETE /batch_inputs/1
   def destroy
-    batch = @batch_input.batch
-    product = @batch_input.product
     @batch_input.destroy!
 
-    locals = {
-      batch_input: BatchInput.new(batch: batch, product: product, quantity: nil),
-      product:
-    }
-
-    container_id = "input_product_#{product.id}"
+    container_id = "input_product_#{@batch_input.product.id}"
 
     turbo_stream_actions(
-      turbo_stream.replace(container_id, partial: "batches/batch_input_form", locals: ),
-      update_balance(batch)
+      send_flash("Deleted.", :alert),
+      turbo_stream.replace(container_id, Components::BatchInputForm.new(batch_input: @batch_input)),
+      update_balance(@batch_input.batch)
     )
   end
 
