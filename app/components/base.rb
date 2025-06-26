@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+module Components
+  extend Phlex::Kit
+end
+
 class Components::Base < Phlex::HTML
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::Routes
