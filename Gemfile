@@ -14,7 +14,7 @@ gem "importmap-rails"
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 
-# gem "phlex-rails", "~> 2.3"
+gem "phlex-rails", "~> 2.3"
 gem "view_component"
 gem "stimulus-rails"
 # App specific
