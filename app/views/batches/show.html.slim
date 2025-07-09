@@ -3,7 +3,7 @@
 
 - content_for :menu do
   / = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
-  = button_to "Wis", @batch, method: :delete
+  / = button_to "Wis", @batch, method: :delete
 
 = render Components::BatchHeader.new(@batch)
 

@@ -9,6 +9,13 @@ Bio-Ron RePacMan
     mysqldump -h eek.h.filess.io -u bioron_packageup -p --no-tablespaces bioron_packageup > remote_dump.sql
     mysql bioron_packageup < remote_dump.sql
 
+second variant
+
+    mysqldump --no-tablespaces -h eek.h.filess.io -u bioron_packageup -p --port=3306 bioron_packageup > remote_dump.sql
+    # create tables
+    mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS bioron_packageup_local;"
+    mysql -u root -p bioron_packageup_local < remote_dump.sql
+
 
 ----
 
