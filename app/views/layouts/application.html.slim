@@ -12,8 +12,9 @@ html
     = tag.link rel: "manifest", href: pwa_manifest_path(format: :json)
   body
     header
-      img.logo src=asset_path('logo0_transparent_v4.webp')
-      a href=root_path RE-PAC-MAN
+      a.logo href=root_path
+        img alt="Natuly" src=asset_path("natuly.png") height="100"
+
       - if content_for(:title)
         span.page-title > #{content_for(:title)}
       menu = yield :menu

@@ -1,15 +1,38 @@
-- content_for :menu do
-  a.btn href=batches_path Producties
-  a.btn href='/admin' Admin (DB)
+css:
+  .home_actions a.btn {
+    padding: 1.5rem 3rem;
+    text-transform: uppercase;
+    background-color: #327756;
+    display: block;
+    margin-bottom: 1rem;
+  }
 
-a.btn href=export_printeds_path(format: :xml) style="text-align: left"
-  | Export XML (Exact)
-  div style="margin-top: 0.5rem; font-size: 0.75rem"
-    div ##{@export_count} record(s)
-    div Last export was at
-    / input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true disabled=true
-    div = l(@last_xml_exported_at, format: :short)
-    div = @items.join(", ")
+  h1.welcome {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+- content_for :menu do
+  a.menu_link href=root_path
+    | 🏠
+  a.menu_link href=batches_path Producties
+  a.menu_link href="#" Labels
+  a.menu_link href='/admin' Admin
+
+h1.welcome Welkom
+
+.home_actions
+  a.btn href="#" Nieuwe productie
+.home_actions
+  a.btn href=export_printeds_path(format: :xml)
+    | Export XML
+    / div style="margin-top: 0.5rem; font-size: 0.75rem"
+    /   div ##{@export_count} record(s)
+    /   div Last export was at
+      / input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true disabled=true
+      / div = l(@last_xml_exported_at, format: :short)
+      / div = @items.join(", ")
 
 javascript:
   document.getElementById("export-btn").addEventListener("click", () => {
