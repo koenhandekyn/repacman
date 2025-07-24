@@ -13,6 +13,13 @@ css:
     font-weight: 400;
   }
 
+  section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    align-items: center;
+  }
+
 - content_for :menu do
   a.menu_link href=root_path
     | 🏠
@@ -22,17 +29,20 @@ css:
 
 h1.welcome Welkom
 
-.home_actions
-  a.btn href="#" Nieuwe productie
-.home_actions
-  a.btn href=export_printeds_path(format: :xml)
-    | Export XML
-    / div style="margin-top: 0.5rem; font-size: 0.75rem"
-    /   div ##{@export_count} record(s)
-    /   div Last export was at
-      / input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true disabled=true
-      / div = l(@last_xml_exported_at, format: :short)
-      / div = @items.join(", ")
+section
+  .home_actions
+    a.btn href="#" Nieuwe productie
+    a.btn href=export_printeds_path(format: :xml)
+      | Export XML
+      / div style="margin-top: 0.5rem; font-size: 0.75rem"
+      /   div ##{@export_count} record(s)
+      /   div Last export was at
+        / input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true disabled=true
+        / div = l(@last_xml_exported_at, format: :short)
+        / div = @items.join(", ")
+
+  .images
+    img src=asset_path("horse.jpg") alt="Horse" height="400"
 
 javascript:
   document.getElementById("export-btn").addEventListener("click", () => {

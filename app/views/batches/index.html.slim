@@ -2,19 +2,32 @@
   | Producties
 
 - content_for :menu do
-  = link_to "Nieuwe productie", new_batch_path, class: "btn"
+  a.menu_link href=new_batch_path Nieuwe productie
+
 
 
 #batches
+  batch-row
+    = select_tag :family_id, options_from_collection_for_select(@families, :id, :name), prompt: "Selecteer familie", class: "form-select", id: "family_id"
+    div
+    div
+    div
+    = select_tag :status_id, options_for_select(@statuses), prompt: "Selecteer status", class: "form-select", id: "status_id"
+    div
   batch-row style="font-weight: bold"
+    batch-family Familie
     batch-date Productie
     batch-uid Batch
-    batch-family Familie
+    batch-weight Weight
+    batch-status Status
+
   - @batches.each do |batch|
     batch-row id="#{dom_id batch}"
+      batch-family = batch.family.name
       batch-produced-at = l(batch.produced_at, format: :short)
       batch-uid = batch.batch_uid
-      batch-family = batch.family.name
+      batch-weight = batch.weight
+      batch-status = %w[✅ ❌].sample
       .actions.justify-content-right
         = link_to "Open", batch, class: "btn"
         / = link_to "Edit", edit_batch_path(batch), class: "btn"

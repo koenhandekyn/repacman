@@ -16,8 +16,11 @@ html
         img alt="Natuly" src=asset_path("natuly.png") height="100"
 
       - if content_for(:title)
-        span.page-title > #{content_for(:title)}
-      menu = yield :menu
+        .page-title > #{content_for(:title)}
+      menu
+        = yield :menu
+        a.menu_link href="#"
+          | 👤
     main
       #flashes
       = yield

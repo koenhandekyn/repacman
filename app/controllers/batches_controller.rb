@@ -4,6 +4,8 @@ class BatchesController < ApplicationController
   # GET /batches
   def index
     @batches = Batch.all
+    @families = Family.order(:name)
+    @statuses = [:done, :in_progress]
   end
 
   # GET /batches/1
