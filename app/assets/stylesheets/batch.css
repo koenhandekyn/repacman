@@ -4,7 +4,7 @@ batch-header {
     "produced-at family weight"
     "best-before family weight"
     "uid uid uid";
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 0.25rem;
   batch-produced-at {
     grid-area: produced-at;

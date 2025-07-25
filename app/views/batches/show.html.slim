@@ -7,7 +7,7 @@
 
 = render Components::BatchHeader.new(@batch)
 
-div
+section
   h2 Ingredients
   - @batch.family.assemblies.each do |assembly|
     - status = @batch.assembly_status(assembly)

@@ -3,7 +3,11 @@ class BatchesController < ApplicationController
 
   # GET /batches
   def index
-    @batches = Batch.all
+    if params[:family_id].present?
+      @batches = Batch.where(family_id: params[:family_id])
+    else
+      @batches = Batch.all
+    end
     @families = Family.order(:name)
     @statuses = [:done, :in_progress]
   end

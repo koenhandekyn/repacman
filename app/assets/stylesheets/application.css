@@ -283,3 +283,18 @@ cols2 {
 }
 
 @import "batch_header";
+
+button.simple {
+  padding: 0.35rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #094332;
+}
+
+select.simple {
+  padding: 0.5rem 1rem;
+  border: 1px solid #094332;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #094332;
+}
