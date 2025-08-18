@@ -4,10 +4,29 @@
   box-sizing: border-box;
 }
 
+:root {
+  --nl-donkergroen: rgb(0, 65, 4);
+  /* nl light green is a pretty dark kind of light green */
+  --nl-lichtgroen: rgb(28, 118, 28);
+  /* nl-geel is an warm kind of yellow */
+  --nl-geel: rgb(193, 172, 51);
+  /* nl-roze is a warm and dark kind of pink */
+  --nl-roze: rgb(211, 117, 132);
+  /* nl-donkerroze is a dark and warm kind of pinky purple */
+  --nl-donkerroze: rgb(138, 46, 84);
+  /* nl-beige is a light and warm kind of beige */
+  --nl-beige: rgb(249, 246, 243);
+}
+
+a {
+  color: var(--nl-donkergroen);
+  text-decoration: none;
+}
+
 /* Application styles */
 body {
-  background-color: #fff;
-  color: #000;
+  background-color: white;
+  color: rgb(0, 65, 4);
   font-family: 'Tahoma', sans-serif;
   margin: 1.5rem;
   padding: 0;
@@ -17,7 +36,6 @@ main {
   display: flex;
   flex-direction: column;
   margin-top: 2em;
-  max-width: 60rem;
   margin-left: auto;
   margin-right: auto;
   min-height: calc(100vh - 10em);
@@ -35,22 +53,26 @@ details {
 
 header {
   display: flex;
-  align-items: end;
+  align-items: center;
+  background-color: white;
   font-size: 1.25em;
-  color: #000;
+  color: white;
+  margin-top: 1em;
 
   a {
     align-items: center;
-    color: #327756;
+    /* color: white; */
     text-decoration: none;
   }
 
-  .page-title {
-    margin-left: 0.5em;
-    white-space: nowrap;
-    text-transform: uppercase;
-    position: relative;
-    padding: 0.25rem 0.5rem;
+  a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--nl-geel);
+    /* color: var(--nl-lichtgroen); */
+    text-decoration-thickness: 0.1px;
+    text-underline-offset: 1em;
+    /* shadow */
+    text-shadow: 0 0 1px var(--nl-geel);
   }
 
   menu {
@@ -79,10 +101,19 @@ header {
       }
     }
   }
+  border-bottom: 4px dashed var(--nl-lichtgroen);
+}
+
+page-title {
+  /* margin-left: 0.5em; */
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
 }
 
 .logo {
   height: 4em;
+  padding: 1em;
 }
 
 h1 {
@@ -100,7 +131,15 @@ input[type="submit"],
   text-decoration: none;
   cursor: pointer;
   font-size: 1em;
+  /* make the border curly like a pencil */
+  border-style: dashed;
+  border-width: 4px;
+  border-color: var(--nl-lichtgroen);
   border-radius: 0.5em;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  border-bottom-right-radius: 225px 15px;
+  border-bottom-left-radius:15px 255px;
 }
 
 button:hover,
@@ -267,6 +306,10 @@ cols2 {
   flex-direction: column;
 }
 
+.gap-1 {
+  gap: 1em;
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -297,4 +340,13 @@ select.simple {
   border-radius: 4px;
   background-color: #fff;
   color: #094332;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.m-auto {
+  margin-left: auto;
+  margin-right: auto;
 }

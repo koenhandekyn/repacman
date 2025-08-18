@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title Repacman
+    / title Repacman
     meta[name="viewport" content="width=device-width,initial-scale=1"]
     meta[name="apple-mobile-web-app-capable" content="yes"]
     meta[name="mobile-web-app-capable" content="yes"]
@@ -10,6 +10,8 @@ html
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
     = tag.link rel: "manifest", href: pwa_manifest_path(format: :json)
+    /* page title */
+    title #{content_for(:title)} - Natuly
   body
     header
       a.logo href=root_path
@@ -23,4 +25,6 @@ html
           | 👤
     main
       #flashes
+      - if content_for(:title)
+        page-title #{content_for(:title)}
       = yield
