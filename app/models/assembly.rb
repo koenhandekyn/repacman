@@ -10,8 +10,8 @@
 #  updated_at       :datetime         not null
 #
 class Assembly < ApplicationRecord
-  belongs_to :parent, class_name: 'Family', foreign_key: 'parent_family_id'
-  belongs_to :child, class_name: 'Family', foreign_key: 'child_family_id'
+  belongs_to :parent, class_name: "Family", foreign_key: "parent_family_id"
+  belongs_to :child, class_name: "Family", foreign_key: "child_family_id"
 
   def name
     "#{child.name}"
@@ -53,14 +53,23 @@ class Assembly < ApplicationRecord
     Unit.new("0 kg").to("kg")
   end
 
+  def weight_difference_percentage_in_batch(batch)
+    actual_weight = batch.batch_inputs.joins(:product).where(products: { family: child }).sum(&:weight_base)
+    expected_weight = fraction_of_weight(batch.weight_base)
+    (actual_weight - expected_weight) / expected_weight
+  rescue
+    nil
+  end
+
   def weight_status_in_batch(batch)
     diff = weight_difference_in_batch(batch)
-    if diff > 0
-      { color: 'yellow', diff: diff }
-    elsif diff < 0
-      { color: 'red', diff: diff }
+    diff_perc = weight_difference_percentage_in_batch(batch)
+    if diff_perc > 0.01
+      { status: :above, diff:, diff_perc: }
+    elsif diff_perc < -0.01
+      { status: :below, diff:, diff_perc: }
     else
-      { color: nil, diff: diff }
+      { status: :matching, diff:, diff_perc: }
     end
   end
 

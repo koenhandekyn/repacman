@@ -2,35 +2,32 @@
   | Producties
 
 - content_for :menu do
-  a.menu_link href=new_batch_path Nieuwe productie
-
-
+  a.menu_link href=new_batch_path
+    span.material-symbols-outlined.pr-1 add_2
+    span Nieuwe productie
 
 #batches
   = form_with url: batches_path, method: :get, data: { turbo_frame: "batches_list", controller: "batch-filter" } do |f|
-    batch-row style="margin-bottom: 1.5rem;"
+    .batch-row.filters
       = f.select :family_id, options_from_collection_for_select(@families, :id, :name, params[:family_id]), {prompt: "Selecteer familie"}, {class: "simple#{' selected' if params[:family_id].present?}", id: "family_id", onchange: "this.form.submit();"}
       div
       div
       div
       = f.select :status_id, options_for_select(@statuses, params[:status_id]), {prompt: "Selecteer status"}, {class: "simple#{' selected' if params[:status_id].present?}", id: "status_id", onchange: "this.form.submit();"}
-      = button_tag "Wis filters", type: "submit", name: nil, class: "simple", onclick: "document.getElementById('family_id').selectedIndex = 0; document.getElementById('status_id').selectedIndex = 0; this.form.submit(); return false;" if params[:family_id].present? || params[:status_id].present?
       span data-batch-filter-target="spinner" style="display:none; margin-left:10px;" Loading...
-  = turbo_frame_tag "batches_list" do
-    batch-row style="font-weight: bold"
+    .batch-row.header
       batch-family Familie
       batch-date Productie
       batch-uid Batch
-      batch-weight Weight
-      batch-status Status
-
+      batch-weight.text-right Gewicht
+      batch-status.text-right Status
+  = turbo_frame_tag "batches_list" do
     - @batches.each do |batch|
-      batch-row id="#{dom_id batch}"
+      a.batch-row href=batch_path(batch) data-turbo-frame="_top" id="#{dom_id batch}"
         batch-family = batch.family.name
         batch-produced-at = l(batch.produced_at, format: :short)
         batch-uid = batch.batch_uid
-        batch-weight = batch.weight
-        batch-status = %w[✅ ❌].sample
-        .actions.justify-content-right
-          = link_to "Open", batch, class: "btn", data: { turbo: false }
-          / = link_to "Edit", edit_batch_path(batch), class: "btn"
+        batch-weight.text-right = batch.weight
+        batch-status.text-right
+          span.material-symbols-outlined.text-right check
+          span.material-symbols-outlined.text-right close

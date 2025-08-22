@@ -32,7 +32,7 @@ class BatchInputsController < ApplicationController
     container_id = "input_product_#{product.id}"
 
     turbo_stream_actions(
-      turbo_stream.replace(container_id, Components::BatchInputForm.new(batch_input:)),
+      turbo_stream.replace(container_id, Components::BatchInputForm.new(batch_input:, assembly: batch_input.assembly)),
       update_balance(batch_input.batch)
     )
   end
@@ -60,7 +60,7 @@ class BatchInputsController < ApplicationController
 
     turbo_stream_actions(
       send_flash("Deleted.", :alert),
-      turbo_stream.replace(container_id, Components::BatchInputForm.new(batch_input: @batch_input)),
+      turbo_stream.replace(container_id, Components::BatchInputForm.new(batch_input: @batch_input, assembly: @batch_input.assembly)),
       update_balance(@batch_input.batch)
     )
   end

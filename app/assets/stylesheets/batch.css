@@ -25,12 +25,32 @@ batch-header {
   }
 }
 
-batch-input, batch-output {
+batch-input {
+  display: grid;
+  grid-template-columns: 1fr 5rem 8rem 5rem 4rem 6rem minmax(10rem, 1fr) 2rem 2rem;
+  input, select {
+    border: 1px solid rgb(0, 65, 4);
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0.25rem;
+    margin: 0.25rem;
+  }
+  & :focus {
+    outline: 4px solid rgb(35, 215, 11);
+    z-index: 1;
+  }
+  input:disabled, select:disabled {
+    border: none;
+  }
+}
+
+batch-output {
   display: grid;
   grid-template-columns: 20rem 10rem 10rem 6rem 14rem;
   input, select {
     border: 1px solid rgb(0, 65, 4);
-    background-color: rgba(255, 255, 255, 0.5)
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0.25rem;
+    margin: 0.25rem;
   }
   & :focus {
     outline: 4px solid rgb(35, 215, 11);

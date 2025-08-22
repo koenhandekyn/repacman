@@ -55,7 +55,7 @@ class Batch < ApplicationRecord
   end
 
   def total_weight_difference_base_ib
-    total_weight_inputs_base.scalar - weight_base.scalar
+    total_weight_inputs_base - weight_base
   end
 
   def total_weight_difference_base_ob

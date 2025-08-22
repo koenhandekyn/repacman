@@ -16,15 +16,17 @@ html
     header
       a.logo href=root_path
         img alt="Natuly" src=asset_path("natuly.png") height="100"
-
-      - if content_for(:title)
-        .page-title > #{content_for(:title)}
       menu
-        = yield :menu
-        a.menu_link href="#"
-          | 👤
+        a.material-symbols-outlined href=root_path home
+        a href=batches_path Producties
+        a href="#" Labels
+        a href='/admin' Admin
+        a.material-symbols-outlined href="#" person
     main
+      / - if content_for(:title)
+      /   page-title #{content_for(:title)}
+      - if content_for(:menu)
+        menu
+          = content_for(:menu)
       #flashes
-      - if content_for(:title)
-        page-title #{content_for(:title)}
       = yield

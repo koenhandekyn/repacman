@@ -3,13 +3,11 @@ class BatchesController < ApplicationController
 
   # GET /batches
   def index
-    if params[:family_id].present?
-      @batches = Batch.where(family_id: params[:family_id])
-    else
-      @batches = Batch.all
-    end
-    @families = Family.order(:name)
-    @statuses = [:done, :in_progress]
+    @batches = Batch.all
+    @batches = @batches.where(family_id: params[:family_id]) if params[:family_id].present?
+    @batches = @batches.where(status: params[:status]) if params[:status].present?
+    @families = Family.where(id: @batches.select(:family_id).distinct).order(:name)
+    @statuses = { "✅" => :done, "❌" => :in_progress }
   end
 
   # GET /batches/1
@@ -20,7 +18,7 @@ class BatchesController < ApplicationController
   def new
     @batch = Batch.new(
       produced_at: Time.zone.now,
-      batch_uid: Time.zone.now.strftime("P%y%m%d") + Time.zone.now.seconds_since_midnight.to_i.to_s.rjust(5, '0')
+      batch_uid: Time.zone.now.strftime("P%y%m%d") + Time.zone.now.seconds_since_midnight.to_i.to_s.rjust(5, "0"),
     )
   end
 
@@ -33,7 +31,7 @@ class BatchesController < ApplicationController
     @batch = Batch.new(batch_params)
 
     if @batch.save
-      redirect_to [:edit, @batch], notice: "Batch was successfully created."
+      redirect_to @batch, notice: "Batch was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -55,15 +53,16 @@ class BatchesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_batch
-      @batch = Batch.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def batch_params
-      params.fetch(:batch, { }).permit(:produced_at, :batch_uid, :family_id, :weight, :best_before_date)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_batch
+    @batch = Batch.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def batch_params
+    params.fetch(:batch, {}).permit(:produced_at, :batch_uid, :family_id, :weight, :best_before_date)
+  end
 end
 
 #  id          :bigint           not null, primary key

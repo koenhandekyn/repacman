@@ -1,54 +1,32 @@
 - content_for :title do
-  a href=batches_path Producties
+  | Productie #{@batch.batch_uid}
 
-- content_for :menu do
-  / = link_to "Bewerken", edit_batch_path(@batch), class: "btn"
-  / = button_to "Wis", @batch, method: :delete
+/ = render Components::BatchHeader.new(@batch)
 
-= render Components::BatchHeader.new(@batch)
+= render "form", batch: @batch
 
 section
   h2 Ingredients
   - @batch.family.assemblies.each do |assembly|
-    - status = @batch.assembly_status(assembly)
-    ingredient-card.grid.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem 8rem"
-      ingredient-name = assembly.child.name
-      ingredient-fraction-perc.text-right.text-light = number_to_percentage(assembly.fraction.scalar * 100, precision: 2)
-      ingredient-total-weight.text-right style=(status[:color] ? "color: #{status[:color]}" : nil)
-        - if status[:diff].scalar > 0
-          | +
-        - if status[:diff].scalar != 0
-          = status[:diff]
-      ingredient-weight.text-right
-        = assembly.fraction_of_weight(@batch.weight_base).to_s
+    = render Components::IngredientInputs.new(assembly:, batch: @batch)
 
-    = render Components::IngredientInputs.new(assembly: assembly, batch: @batch)
 
-  input-totals.grid.align-items-end.border-bottom.mb.mt style="grid-template-columns: auto 8rem 8rem"
-    - total_weight_diff = @batch.family.assemblies.sum { |assembly| @batch.assembly_status(assembly)[:diff] }
-    - color = total_weight_diff.scalar > 0 ? "yellow" : (total_weight_diff.scalar < 0 ? "red" : nil)
-    input-totals-title.h2 Totaal ingredienten
-    input-totals-weight-diff.text-right style="color: #{color}"
-      - if total_weight_diff.scalar > 0
-        | +
-      - if total_weight_diff.scalar != 0
-        = total_weight_diff
-    input-totals-weight.text-right
-      = @batch.family.assemblies.sum { |assembly| assembly.fraction_of_weight(@batch.weight_base) }
-
-- family = @batch.family.children
-- products = Product.includes(:family).where(family:)
-
-outputs.grid.border-bottom.align-items-end.mt.mb style="grid-template-columns: auto 8rem 8rem"
-  - family = @batch.family
-  - products = Product.includes(:family).where(family:)
-  - total_weight_outputs = @batch.total_weight_outputs_base
-  - total_weight_inputs = @batch.total_weight_inputs_base
-  - total_weight_diff = total_weight_outputs - total_weight_inputs
-  - color = total_weight_diff.scalar > 0 ? "yellow" : (total_weight_diff.scalar < 0 ? "red" : nil)
+outputs.grid.align-items-end.mt.mb style="grid-template-columns: auto auto"
+  ruby:
+    family = @batch.family
+    products = Product.includes(:family).where(family:)
+    total_weight_outputs = @batch.total_weight_outputs_base
+    total_weight_inputs = @batch.total_weight_inputs_base
+    total_weight_diff = total_weight_outputs - total_weight_inputs
+    total_weight_diff_perc = total_weight_diff / total_weight_inputs
   div.h2 Outputs
-  output-total-weight.text-right style="color: #{color}" = total_weight_diff
-  output-total-weight.text-right = total_weight_outputs
+  output-total-weight.text-right
+
+    - if total_weight_diff_perc.abs > 0.001
+      => format_weight_with_units(total_weight_inputs)
+      span style="color: red"
+        = format_weight_with_units_with_sign(total_weight_diff)
+    |< = #{format_weight_with_units(total_weight_outputs)}
 
 div#batch_outputs
   - @batch.batch_outputs.each do |batch_output|
@@ -57,11 +35,11 @@ hr
 
 = render "batch_output_form", batch_output: @batch.batch_outputs.new, batch: @batch, products:
 
-/ = turbo_frame_tag "balances" do
-  = render "balances", batch: @batch
+.mt style="display: inline-flex; width: fit-content; gap: 0.5rem; margin-left: auto;"
+  = button_to @batch, class: "btn", title: "Print" do
+    span.material-symbols-outlined
+      | print
 
-h2 Batch Details
-
-= render "form", batch: @batch
-
-= button_to "Deze batch verwijderen", @batch, method: :delete, class: "btn btn-danger", data: { turbo_confirm: "Weet je zeker dat je deze batch wilt verwijderen?" }
+  = button_to @batch, method: :delete, class: "btn btn-danger", title: "Verwijder", data: { turbo_confirm: "Weet je zeker dat je deze batch wilt verwijderen?" } do
+    span.material-symbols-outlined
+      | delete

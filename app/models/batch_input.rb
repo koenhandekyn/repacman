@@ -18,4 +18,14 @@ class BatchInput < ApplicationRecord
     return Unit.new("0 kg") if quantity.nil? || product.nil?
     quantity * product.weight_base
   end
+
+  # return the assembly for the product in the batch
+  def assembly
+    return nil unless batch&.family && product&.family
+
+    Assembly.find_by(
+      parent_family_id: batch.family.id,
+      child_family_id: product.family.id,
+    )
+  end
 end
