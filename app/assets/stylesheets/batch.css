@@ -27,7 +27,7 @@ batch-header {
 
 batch-input {
   display: grid;
-  grid-template-columns: 1fr 5rem 8rem 5rem 4rem 6rem minmax(10rem, 1fr) 2rem 2rem;
+  grid-template-columns: 2rem 1fr 5rem 8rem 5rem 4rem 6rem minmax(10rem, 1fr) 2rem 2rem;
   input, select {
     border: 1px solid rgb(0, 65, 4);
     background-color: rgba(255, 255, 255, 0.5);
@@ -45,7 +45,7 @@ batch-input {
 
 batch-output {
   display: grid;
-  grid-template-columns: 20rem 10rem 10rem 6rem 14rem;
+  grid-template-columns: 20rem 10rem 10rem 1fr 1fr;
   input, select {
     border: 1px solid rgb(0, 65, 4);
     background-color: rgba(255, 255, 255, 0.5);
@@ -58,11 +58,8 @@ batch-output {
     /* border: 1px solid rgb(35, 215, 11); */
   }
   .label-printed-at {
-    text-align: right;
-    font-size: 0.75em;
     display: flex;
-    /* vertical center */
     align-items: center;
-    justify-content: flex-end;
+    color: rgb(100, 100, 100);
   }
 }

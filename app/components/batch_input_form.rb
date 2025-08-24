@@ -46,6 +46,7 @@ class Components::BatchInputForm < Components::Base
         form.hidden_field(:batch_id)
         batch_input do
           form.hidden_field(:product_id, value: @batch_input.product.id)
+          form.text_field(:step, value: @batch_input.assembly.step, disabled: true)
           form.text_field(:product_name, value: @batch_input.product.name, disabled: true)
           form.text_field(:fraction, value: fraction, disabled: true, class: "text-right")
           # show the ingredient weight

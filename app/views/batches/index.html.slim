@@ -13,7 +13,7 @@
       div
       div
       div
-      = f.select :status_id, options_for_select(@statuses, params[:status_id]), {prompt: "Selecteer status"}, {class: "simple#{' selected' if params[:status_id].present?}", id: "status_id", onchange: "this.form.submit();"}
+      = f.select :status_id, options_for_select(Batch::STATUS_TO_SYMBOL.invert, params[:status_id]), {prompt: "Selecteer status"}, {class: "simple#{' selected' if params[:status_id].present?}", id: "status_id", onchange: "this.form.submit();"}
       span data-batch-filter-target="spinner" style="display:none; margin-left:10px;" Loading...
     .batch-row.header
       batch-family Familie
@@ -29,5 +29,7 @@
         batch-uid = batch.batch_uid
         batch-weight.text-right = batch.weight
         batch-status.text-right
-          span.material-symbols-outlined.text-right check
-          span.material-symbols-outlined.text-right close
+          - if batch.completed?
+            span.material-symbols-outlined.text-right check
+          - else
+            span.material-symbols-outlined.text-right close

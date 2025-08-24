@@ -1,0 +1,8 @@
+doctype html
+html
+  head
+    meta[name="viewport" content="initial-scale=1"]
+    = stylesheet_link_tag :app
+    title #{content_for(:title)} - Natuly
+  body
+    = yield

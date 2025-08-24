@@ -9,13 +9,14 @@
       - else
         input type="text" readonly="readonly" placeholder="Auto" value="" disabled="disabled"
       .actions
-        = form.submit (batch_output.persisted? ? "Bewaar" : "Voe toe"), data: { disable_with: "Bewaren..." }
+        button type="submit"
+          span.material-symbols-outlined save
         - if batch_output.persisted?
-          = link_to "Wis", batch_output, data: { turbo_method: :delete }, class: "btn btn-danger"
-        - else
-          div
-      span.label-printed-at
-        - if batch_output.label_printed_at
-          = l(batch_output.label_printed_at, format: :short)
-        - else
-          = "Label niet geprint"
+          = link_to batch_output, data: { turbo_method: :delete }, class: "btn btn-danger", title: "Verwijder" do
+            span.material-symbols-outlined delete
+          - if batch_output.label_printed_at
+            span.vertical-center
+              = l(batch_output.label_printed_at, format: :short)
+          - else
+            button type="submit" onclick="return false;"
+              span.material-symbols-outlined title="Label niet geprint" block

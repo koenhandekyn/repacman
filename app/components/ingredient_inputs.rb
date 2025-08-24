@@ -2,7 +2,7 @@
 class Components::IngredientInputs < Components::Base
   def initialize(assembly:, batch:)
     @batch = batch
-    @products = Product.preffered_input.by_family(assembly.child).sorted_by_weight
+    @products = Product.preffered_input.by_family(assembly.child)
     @assembly = assembly
   end
 
