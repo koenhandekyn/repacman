@@ -27,10 +27,7 @@ class Batch < ApplicationRecord
   scope :produced_at_desc, -> { order(produced_at: :desc) }
   default_scope { produced_at_desc }
 
-  enum status: {
-    pending: "pending",
-    completed: "completed",
-  }
+  enum :status, { pending: "pending", completed: "completed" }
 
   # mapping from status to symbol as constant hash frozen
   STATUS_TO_SYMBOL = {
