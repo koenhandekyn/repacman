@@ -248,7 +248,6 @@ a:hover.batch-row {
 
 table.barby-barcode {
   border-spacing: 0;
-  width: 6cm;
 }
 
 tr.barby-row {}
@@ -270,10 +269,11 @@ pre.barby-barcode {
   color: black;
   display: flex;
   justify-content: center;
-  letter-spacing: 1em;
+  text-align: center;
+  letter-spacing: 0.7em;
   /* Adjust for better spacing */
   white-space: pre;
-  width: 6cm;
+  /* width: 6cm; */
   /* Shrink to barcode width */
 }
 

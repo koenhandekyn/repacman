@@ -32,8 +32,8 @@ class Batch < ApplicationRecord
 
   # mapping from status to symbol as constant hash frozen
   STATUS_TO_SYMBOL = {
-    pending: "✅",
-    completed: "❌",
+    pending: "❌",
+    completed: "✅",
   }.freeze
 
   #more
@@ -67,7 +67,7 @@ class Batch < ApplicationRecord
   def total_weight_difference_base_ib = total_weight_inputs_base - weight_base
   def total_weight_difference_base_ob = total_weight_outputs_base - weight_base
   def total_weight_diff = total_weight_outputs_base - total_weight_inputs_base
-  def total_weight_diff_perc = total_weight_diff / total_weight_inputs_base
+  def total_weight_diff_perc = total_weight_diff / total_weight_inputs_base rescue 0
 
   def set_best_before_date
     if produced_at.present? && family&.tht_months.present?
