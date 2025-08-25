@@ -25,6 +25,7 @@ class Product < ApplicationRecord
 
   scope :by_family, ->(family) { includes(:family).where(family: family) }
   scope :sorted_by_weight, -> { sort_by(&:weight_base_scalar).reverse }
+  scope :preffered_input, -> { where(preffered_input: true) }
 
   def name
     "#{family.name} (#{weight})"

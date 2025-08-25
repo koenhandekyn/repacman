@@ -2,19 +2,34 @@
   | Producties
 
 - content_for :menu do
-  = link_to "Nieuwe productie", new_batch_path, class: "btn"
-
+  a.menu_link href=new_batch_path
+    span.material-symbols-outlined.pr-1 add_2
+    span Nieuwe productie
 
 #batches
-  batch-row style="font-weight: bold"
-    batch-date Productie
-    batch-uid Batch
-    batch-family Familie
-  - @batches.each do |batch|
-    batch-row id="#{dom_id batch}"
-      batch-produced-at = l(batch.produced_at, format: :short)
-      batch-uid = batch.batch_uid
-      batch-family = batch.family.name
-      .actions.justify-content-right
-        = link_to "Open", batch, class: "btn"
-        / = link_to "Edit", edit_batch_path(batch), class: "btn"
+  = form_with url: batches_path, method: :get, data: { turbo_frame: "batches_list", controller: "batch-filter" } do |f|
+    .batch-row.filters
+      = f.select :family_id, options_from_collection_for_select(@families, :id, :name, params[:family_id]), {prompt: "Selecteer familie"}, {class: "simple#{' selected' if params[:family_id].present?}", id: "family_id", onchange: "this.form.submit();"}
+      div
+      div
+      div
+      = f.select :status, options_for_select(Batch::STATUS_TO_SYMBOL.invert, params[:status_id]), {prompt: "Selecteer status"}, {class: "simple#{' selected' if params[:status_id].present?}", id: "status_id", onchange: "this.form.submit();"}
+      span data-batch-filter-target="spinner" style="display:none; margin-left:10px;" Loading...
+    .batch-row.header
+      batch-family Familie
+      batch-date Productie
+      batch-uid Batch
+      batch-weight.text-right Gewicht
+      batch-status.text-right Status
+  = turbo_frame_tag "batches_list" do
+    - @batches.each do |batch|
+      a.batch-row href=batch_path(batch) data-turbo-frame="_top" id="#{dom_id batch}"
+        batch-family = batch.family.name
+        batch-produced-at = l(batch.produced_at, format: :short)
+        batch-uid = batch.batch_uid
+        batch-weight.text-right = batch.weight
+        batch-status.text-right
+          - if batch.completed?
+            span.material-symbols-outlined.text-right check
+          - else
+            span.material-symbols-outlined.text-right close

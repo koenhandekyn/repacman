@@ -5,35 +5,35 @@
         - batch.errors.reject { [:batch_uid, :produced_at, :family_id].include?(it.attribute) }.each do |error|
           li = error.full_message
 
-  form-field
-    label Family
-    form-input
-      = form.collection_select :family_id, Family.has_children, :id, :name
-
-  cols2
+  cols style="grid-template-columns: 1fr 1fr 14rem 8rem 6rem 5rem"
     form-field
-      label Batch Code
+      label Familie
+      form-input
+        = form.collection_select :family_id, Family.has_children, :id, :name, { selected: batch.family_id }, { disabled: batch.persisted? }
+
+    form-field
+      label Batch
       form-input
         = form.text_field :batch_uid
       div style="color: red; text-align: left"
         = batch.errors[:batch_uid].first if batch.errors[:batch_uid].any?
 
     form-field
-      label Production Datetime
+      label Productie
       form-input
         = form.datetime_field :produced_at
 
-  cols2
+    - if batch.persisted?
+      form-field
+        label THT
+        form-input
+          = form.text_field :best_before_date, value: batch.best_before_date&.strftime('%Y-%m-%d'), readonly: true
+    - else
+      form-field
+
     form-field
-      label Weight
+      label Gewicht
       form-input
         = form.text_field :weight
 
-    - if batch.persisted?
-      form-field
-        label Best Before Date
-        form-input
-          = form.text_field :best_before_date, value: batch.best_before_date&.strftime('%Y-%m-%d'), readonly: true
-
-  form-field
     = form.submit "Bewaar"

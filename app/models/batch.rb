@@ -25,6 +25,19 @@ class Batch < ApplicationRecord
   scope :produced_at_desc, -> { order(produced_at: :desc) }
   default_scope { produced_at_desc }
 
+  enum status: {
+    pending: "pending",
+    completed: "completed",
+  }
+
+  # mapping from status to symbol as constant hash frozen
+  STATUS_TO_SYMBOL = {
+    pending: "❌",
+    completed: "✅",
+  }.freeze
+
+  #more
+
   def weight_base
     # Unit.new(weight).to("kg") rescue Unit.new("#{weight} kg").to("kg") rescue Unit.new("0 kg")
     if Unit.new(weight).units.blank?
@@ -50,17 +63,11 @@ class Batch < ApplicationRecord
     Unit.new("0 kg").to("kg")
   end
 
-  def total_weight_difference_base_io
-    total_weight_outputs_base - total_weight_inputs_base
-  end
-
-  def total_weight_difference_base_ib
-    total_weight_inputs_base.scalar - weight_base.scalar
-  end
-
-  def total_weight_difference_base_ob
-    total_weight_outputs_base.scalar - weight_base.scalar
-  end
+  def total_weight_difference_base_io = total_weight_outputs_base - total_weight_inputs_base
+  def total_weight_difference_base_ib = total_weight_inputs_base - weight_base
+  def total_weight_difference_base_ob = total_weight_outputs_base - weight_base
+  def total_weight_diff = total_weight_outputs_base - total_weight_inputs_base
+  def total_weight_diff_perc = total_weight_diff / total_weight_inputs_base rescue 0
 
   def set_best_before_date
     if produced_at.present? && family&.tht_months.present?

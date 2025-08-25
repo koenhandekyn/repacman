@@ -1,24 +1,39 @@
-- content_for :menu do
-  a href=batches_path Producties
-  a href="#" Labels
-  a href='/admin' Admin
+css:
+  .home_actions a.btn {
+    padding: 1.5rem 3rem;
+    text-transform: uppercase;
+    background-color: #327756;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  h1.welcome {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+  section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    align-items: center;
+    /* center each column */
+    justify-items: center;
+  }
 
 
-.grid style="grid-template-columns: 1fr 1fr"
-  column.flex-col.gap-1
-    h1 Welkom
-    a.btn.text-left href=new_batch_path
-      | Nieuwe productie
-    a.btn.text-left href=export_printeds_path(format: :xml)
-      | Export XML (Exact)
-      div style="margin-top: 0.5rem; font-size: 0.75rem"
-        div ##{@export_count} record(s)
-        div Last export was at
-        / input type="datetime-local" value="#{@last_xml_exported_at.datetime_local}" readonly=true disabled=true
-        div = l(@last_xml_exported_at, format: :short)
-        div = @items.join(", ")
-  column.m-auto
-    img src=asset_path('background.png')
+
+section.
+
+  .home_actions
+    h1.welcome Welkom
+    a.btn href=href=new_batch_path Nieuwe productie
+    a.btn href=export_printeds_path(format: :xml)
+      | Export XML
+
+  .images
+    img src=asset_path("horse.jpg") alt="Horse" height="400"
 
 javascript:
   document.getElementById("export-btn").addEventListener("click", () => {
