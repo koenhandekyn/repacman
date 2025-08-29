@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  # OAuth routes
+  get "/auth/:provider/callback", to: "auth#callback"
+  get "/auth/failure", to: "auth#failure"
+  delete "/logout", to: "auth#logout"
+
   resources :batch_outputs
   resources :batch_inputs
 
@@ -7,6 +12,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   get "home/home"
+  get "home/login"
 
   resources :printeds do
     get :export, on: :collection

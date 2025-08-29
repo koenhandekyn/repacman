@@ -1,0 +1,12 @@
+- if flash[:error]
+  .alert.alert-danger.mb
+    = flash[:error]
+- if flash[:notice]
+  .alert.alert-success.mb
+    = flash[:notice]
+- if flash[:alert]
+  .alert.alert-danger.mb
+    = flash[:alert]
+.vertical-center style="height: calc(100vh - 100px); "
+  .center style="width: 100%;"
+    = link_to "Login with Google", "/auth/google_oauth2", class: "btn btn-primary shadow"

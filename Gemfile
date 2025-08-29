@@ -20,12 +20,16 @@ gem "stimulus-rails"
 gem "slim-rails"
 gem "csv"
 gem "motor-admin", "~> 0.4"
+# Authentication
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem "barby"
 gem "trilogy"
 gem "ruby-units"
-
+# Gemfile
+gem "omniauth"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "annotate"

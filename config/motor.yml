@@ -343,6 +343,28 @@ resources:
       polymorphic: false
       slug: packaging
   updated_at: 2025-02-25 16:24:03.338085000 +01:00
+- name: user
+  preferences:
+    display_name: Users
+    icon: users
+    columns:
+    - name: name
+      display_name: Name
+      column_type: string
+      access_type: read_write
+    - name: email
+      display_name: Email
+      column_type: string
+      access_type: read_write
+    - name: role
+      display_name: Role
+      column_type: select
+      access_type: read_write
+      options:
+        production: Production
+        admin: Admin
+        "": No Role
+  updated_at: 2025-08-29 16:43:47.000000000 +02:00
 configs:
 - key: header.links
   value:
@@ -403,6 +425,7 @@ configs:
   updated_at: 2025-03-17 07:52:01.302933000 +01:00
 - key: resources.order
   value:
+  - user
   - family
   - assembly
   - product

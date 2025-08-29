@@ -16,22 +16,6 @@ html
     header
       a.logo href=root_path
         img alt="Natuly" src=asset_path("natuly.png") height="100"
-      menu
-        a.material-symbols-outlined href=root_path home
-        a href=batches_path Producties
-        a href="#" Labels
-        - if current_user&.role == "admin"
-          a href='/admin' Admin
-        - if current_user
-          a href="/logout" data-turbo-method="delete" title="#{current_user.name} (#{current_user.email})"
-            span.material-symbols-outlined logout
-        - else
-          a.material-symbols-outlined href="#" person
     main
-      / - if content_for(:title)
-      /   page-title #{content_for(:title)}
-      - if content_for(:menu)
-        menu
-          = content_for(:menu)
       #flashes
       = yield

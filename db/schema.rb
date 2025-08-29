@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_22_134937) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_29_144347) do
   create_table "Printed", id: :integer, charset: "utf16", collation: "utf16_unicode_ci", force: :cascade do |t|
     t.string "NicelabelId", limit: 12
     t.string "RepackDate"
@@ -339,6 +339,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_22_134937) do
     t.index ["family_id"], name: "index_products_on_family_id"
     t.index ["label_id"], name: "index_products_on_label_id"
     t.index ["plant_id"], name: "index_products_on_plant_id"
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "email"
+    t.string "name"
+    t.string "google_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "role", default: ""
   end
 
   add_foreign_key "motor_alert_locks", "motor_alerts", column: "alert_id"
