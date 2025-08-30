@@ -38,7 +38,7 @@ section
   / h2 Ingredients
   - cumulative_weight = 0
   - @batch.family.assemblies.order(:step).group_by(&:step_major).each_with_index do |(step_major, assemblies), index|
-    cols.bold.mt.mb style="grid-template-columns: 18rem 8rem 14rem 10rem 10rem 1fr 1fr"
+    cols.bold.mt.mb style="grid-template-columns: 18rem 8rem 16rem 10rem 10rem 1fr 1fr"
       label Weging #{step_major}
       - if index == 0
         Label Percent
@@ -50,12 +50,13 @@ section
     - assemblies.each do |assembly|
       - cumulative_weight += assembly.target_weight(@batch.weight_base)
       - Product.preffered_input.by_family(assembly.child).each do |product|
-        cols style="grid-template-columns: 18rem 8rem 14rem 10rem 10rem 1fr 1fr; align-items: center; margin-bottom: 0.25rem"
+        cols style="grid-template-columns: 18rem 8rem 16rem 10rem 10rem 1fr 1fr; align-items: center; margin-bottom: 0.25rem"
           cols style="grid-template-columns: 2rem 1fr"
             span = assembly.step_minor
             span = assembly.name
           span = number_to_percentage(assembly.fraction.to_f * 100, precision: 1, strip_insignificant_zeros: true)
-          span = "#{format_weight_with_units(assembly.target_weight(@batch.weight_base))} = #{format_weight_with_units(product.weight_base)} x #{assembly.target_quantity(@batch.weight_base, product).to_f}"
+          - qty = number_with_precision(assembly.target_quantity(@batch.weight_base, product), precision: 3, strip_insignificant_zeros: true)
+          span = "#{format_weight_with_units(assembly.target_weight(@batch.weight_base))} = #{format_weight_with_units(product.weight_base)} x #{qty}"
           span = format_weight_with_units(cumulative_weight)
           span = product.storage_location
           span: input.fw style="height: 2rem" name="actual_weight"
