@@ -21,7 +21,9 @@ class Product < ApplicationRecord
   belongs_to :family
   belongs_to :label
   belongs_to :plant
+
   has_many :printeds, foreign_key: "Itemcode", primary_key: "code"
+  has_many :production_inputs_batch, foreign_key: "ItemCode", primary_key: "code"
 
   scope :by_family, ->(family) { includes(:family).where(family: family) }
   scope :sorted_by_weight, -> { sort_by(&:weight_base_scalar).reverse }

@@ -1,6 +1,6 @@
 ---
-engine_version: 0.4.36
-file_version: 2025-04-08 15:28:27.317334000 Z
+engine_version: 0.4.37
+file_version: 2025-09-12 06:01:19.569937000 Z
 resources:
 - name: assembly
   preferences:
@@ -93,7 +93,12 @@ resources:
       name: created_at
     - access_type: hidden
       name: updated_at
-  updated_at: 2025-02-26 17:04:46.880230000 +01:00
+    searchable_columns:
+    - batch_uid
+    - id
+    - product_id
+    - batch_id
+  updated_at: 2025-09-08 14:02:05.456903000 +02:00
 - name: batch_output
   preferences:
     display_name: Batch Output
@@ -102,7 +107,15 @@ resources:
       name: updated_at
     - access_type: hidden
       name: created_at
-  updated_at: 2025-02-26 16:58:36.177588000 +01:00
+    tabs:
+    - visible: false
+      name: audits
+    searchable_columns:
+    - batch_uid
+    - id
+    - product_id
+    - batch_id
+  updated_at: 2025-09-08 14:01:50.001363000 +02:00
 - name: batch_packaging
   preferences:
     display_name: Batch Created
@@ -223,7 +236,7 @@ resources:
     - name: name
       display_name: Name
       column_type: string
-      access_type: hidden
+      access_type: read_write
       virtual: true
       format: {}
       validators: []
@@ -236,8 +249,7 @@ resources:
       format: {}
       validators: []
       description: ''
-    - access_type: hidden
-      reference:
+    - reference:
         name: plant
         display_name: Plant
         model_name: plant
@@ -261,15 +273,13 @@ resources:
       name: family_id
     - access_type: hidden
       name: id
-    - access_type: hidden
-      name: print_label_repack
-    - access_type: hidden
-      name: label_background_url
-    - default_value:
-      name: is_input
+    - name: is_input
     display_column: name
     display_name: Producten
-  updated_at: 2025-03-28 15:00:39.006500000 +01:00
+    associations:
+    - display_name: Input Batches Exact
+      name: production_inputs_batch
+  updated_at: 2025-09-12 08:01:19.569937000 +02:00
 - name: production/batch
   preferences:
     display_name: 'P: Batches'
@@ -343,6 +353,61 @@ resources:
       polymorphic: false
       slug: packaging
   updated_at: 2025-02-25 16:24:03.338085000 +01:00
+- name: production/production_inputs_batch
+  preferences:
+    display_name: Input Batches Exact
+    columns:
+    - access_type: hidden
+      name: UpdatedAt
+    - name: ItemCode
+      display_name: Item Code
+      column_type: string
+      access_type: read_write
+    - name: batch_number
+      display_name: Batch Number
+      column_type: string
+      access_type: read_write
+    - name: available_quantity
+      display_name: Available Quantity
+      column_type: decimal
+      access_type: read_write
+    - name: warehouses
+      display_name: Warehouses
+      column_type: json
+      access_type: read_only
+  updated_at: 2025-09-12 05:35:00.000000000 +02:00
+- name: production_inputs_batch
+  preferences:
+    display_name: Input Batches Exact
+    columns:
+    - display_name: Item Code
+      access_type: read_only
+      name: ItemCode
+    - display_name: Batch Number
+      access_type: read_only
+      name: batch_number
+    - display_name: Available Quantity
+      column_type: string
+      access_type: read_only
+      name: available_quantity
+    - access_type: hidden
+      name: id
+    - access_type: hidden
+      name: warehouses
+    - display_name: Date Updated
+      access_type: read_only
+      name: UpdatedAt
+    actions:
+    - visible: false
+      name: create
+    - visible: false
+      name: edit
+    - visible: false
+      name: remove
+    tabs:
+    - visible: false
+      name: audits
+  updated_at: 2025-09-12 07:51:49.189597000 +02:00
 - name: user
   preferences:
     display_name: Users
@@ -363,7 +428,7 @@ resources:
       options:
         production: Production
         admin: Admin
-        "": No Role
+        '': No Role
   updated_at: 2025-08-29 16:43:47.000000000 +02:00
 configs:
 - key: header.links
@@ -384,10 +449,10 @@ configs:
     link_type: header
   - conditions: []
     type: header
-    name: Bio-Ron
+    name: https://labelling.natuly.co/
     path: https://repacman.bio-ron.com
     link_type: header
-  updated_at: 2025-03-20 08:13:01.128529000 +01:00
+  updated_at: 2025-09-01 10:49:04.215857000 +02:00
 - key: resources.assembly.columns.order
   value:
   - id
@@ -425,7 +490,6 @@ configs:
   updated_at: 2025-03-17 07:52:01.302933000 +01:00
 - key: resources.order
   value:
-  - user
   - family
   - assembly
   - product
@@ -519,6 +583,18 @@ queries:
     variables: []
   tags: []
   updated_at: 2025-04-08 17:28:27.317334000 +02:00
+- id: 4
+  name: Production Input Batch
+  sql_body: select * from production_inputs_batch
+  description:
+  preferences:
+    query_type: sql
+    database: primary
+    visualization: table
+    visualization_options: {}
+    variables: []
+  tags: []
+  updated_at: 2025-09-12 07:43:36.004948000 +02:00
 dashboards: []
 forms: []
 alerts: []
