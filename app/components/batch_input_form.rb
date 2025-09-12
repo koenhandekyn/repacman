@@ -40,6 +40,15 @@ class Components::BatchInputForm < Components::Base
     "= #{format_weight_with_units(@batch_input.weight_base)}"
   end
 
+  def available_batch_uids
+    @batch_input.product.production_inputs_batch
+                .distinct
+                .pluck(:batch_number)
+                .compact
+                .reject(&:blank?)
+                .sort
+  end
+
   def view_template
     turbo_frame_tag("input_product_#{@batch_input.product.id}") do
       form_with(model: @batch_input) do |form|
@@ -54,7 +63,12 @@ class Components::BatchInputForm < Components::Base
           form.number_field(:quantity, min: 0.00, step: 0.01, placeholder: "Quantity", class: "text-right", required: true)
           form.text_field(:product_weight, value: product_weight, disabled: true, class: "text-right")
           form.text_field(:weight, value: weight, disabled: true, class: "xtext-right")
-          form.text_field(:batch_uid, placeholder: "Batch")
+          form.text_field(:batch_uid, placeholder: "Batch", list: "batch_uid_list", autocomplete: "off")
+          datalist(id: "batch_uid_list") do
+            available_batch_uids.each do |batch_uid|
+              option(value: batch_uid.to_s.strip)
+            end
+          end
           div(style: "display: flex; align-items: center;") { status_indicator }
           div(class: "actions justify-content-right") do
             button(type: "submit") do

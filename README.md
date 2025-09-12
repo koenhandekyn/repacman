@@ -7,6 +7,7 @@ Bio-Ron RePacMan
     mysql -e "CREATE DATABASE bioron_packageup;"
     rm remote_dump.sql
     mysqldump -h eek.h.filess.io -u bioron_packageup -p --no-tablespaces bioron_packageup > remote_dump.sql
+      passowrd: 2617875f38b61b926b6dad806ab466a90f791d6b
     mysql bioron_packageup < remote_dump.sql
 
 second variant
