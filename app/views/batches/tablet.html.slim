@@ -35,6 +35,7 @@ section
     - assemblies.each do |assembly|
       - cumulative_weight += assembly.target_weight(@batch.weight_base)
       - Product.preffered_input.by_family(assembly.child).each do |product|
+        - batch_input = @batch.batch_inputs.find_or_initialize_by(batch: @batch, product: product)
         cols style="grid-template-columns: 18rem 16rem 10rem 1fr 1fr; align-items: center; margin-bottom: 0.25rem"
           cols style="grid-template-columns: 2rem 1fr"
             span = assembly.step_minor
@@ -48,5 +49,53 @@ section
           span = "#{format_weight_with_units(assembly.target_weight(@batch.weight_base))} = #{format_weight_with_units(product.weight_base)} x #{qty}"
           span = format_weight_with_units(cumulative_weight)
           / span = product.storage_location
-          span: input.fw style="height: 2rem" name="actual_weight"
-          span: input.fw style="height: 2rem" name="batch_uid"
+          span: input.fw style="height: 2rem" name="quantity" data-product-id=product.id data-batch-input-id=batch_input.id value=batch_input.quantity
+          span: input.fw style="height: 2rem" name="batch_uid" data-product-id=product.id data-batch-input-id=batch_input.id list="batch_uid_list_#{product.id}" autocomplete="off" value=batch_input.batch_uid
+          datalist id="batch_uid_list_#{product.id}"
+            - available_batch_uids_for_product(product).each do |batch_uid|
+              option value=batch_uid.to_s.strip
+
+meta name="csrf-token" content=form_authenticity_token
+
+javascript:
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[name="quantity"], input[name="batch_uid"]');
+
+    inputs.forEach(input => {
+      input.addEventListener('blur', function() {
+        const batchInputId = this.dataset.batchInputId;
+        const fieldName = this.name;
+        const value = this.value;
+
+        if (value.trim() === '') return;
+
+        // Create form data
+        const formData = new FormData();
+        formData.append('batch_input[' + fieldName + ']', value);
+
+        // Get CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        // Send AJAX request to update existing batch_input
+        fetch('/batch_inputs/' + batchInputId, {
+          method: 'PATCH',
+          body: formData,
+          headers: {
+            'X-CSRF-Token': csrfToken,
+            'Accept': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            console.log('Saved successfully');
+          } else {
+            console.error('Save failed:', data.errors);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  });

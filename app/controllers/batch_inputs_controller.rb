@@ -40,15 +40,23 @@ class BatchInputsController < ApplicationController
   # PATCH/PUT /batch_inputs/1
   def update
     if @batch_input.update(batch_input_params)
-      turbo_stream_actions(
-        send_flash("Updated.", :notice),
-        update_balance(@batch_input.batch)
-      )
+      if request.format.json?
+        render json: { status: "success" }
+      else
+        turbo_stream_actions(
+          send_flash("Updated.", :notice),
+          update_balance(@batch_input.batch)
+        )
+      end
     else
-      turbo_stream_actions(
-        send_flash("Update failed.", :alert),
-        update_balance(@batch_input.batch)
-      )
+      if request.format.json?
+        render json: { status: "error", errors: @batch_input.errors.full_messages }
+      else
+        turbo_stream_actions(
+          send_flash("Update failed.", :alert),
+          update_balance(@batch_input.batch)
+        )
+      end
     end
   end
 
