@@ -1,0 +1,52 @@
+- content_for :title do
+  | Productie #{@batch.batch_uid} (PRINT)
+
+.grid style="grid-template-columns: 12rem 1fr; gap: 1cm; padding: 0.5rem"
+  section
+    img alt="Natuly" src=asset_path("natuly.png") style="width: 10rem"
+
+  section
+    cols style="grid-template-columns: 1fr 10rem 6rem 6rem"
+      / label Familie
+      label
+      label Productie
+      label THT
+      label.text-right Gewicht
+    cols.bold style="grid-template-columns: 1fr 10rem 6rem 6rem"
+      span = @batch.family.name + " / " + @batch.batch_uid
+      span = @batch.produced_at.strftime('%Y-%m-%d %H:%M')
+      span = @batch.best_before_date.strftime('%Y-%m-%d')
+      span.text-right = @batch.weight_base
+
+
+section
+  / h2 Ingredients
+  - cumulative_weight = 0
+  - @batch.family.assemblies.order(:step).group_by(&:step_major).each_with_index do |(step_major, assemblies), index|
+    cols.bold.mt.mb style="grid-template-columns: 18rem 16rem 10rem 1fr 1fr"
+      label Weging #{step_major}
+      - if index == 0
+        / Label Percent
+        label Aantal
+        label Cumulatief
+        / label Opslag
+        label Afgewogen/Aantal
+        label Batch
+    - assemblies.each do |assembly|
+      - cumulative_weight += assembly.target_weight(@batch.weight_base)
+      - Product.preffered_input.by_family(assembly.child).each do |product|
+        cols style="grid-template-columns: 18rem 16rem 10rem 1fr 1fr; align-items: center; margin-bottom: 0.25rem"
+          cols style="grid-template-columns: 2rem 1fr"
+            span = assembly.step_minor
+            span
+              - if product.storage_location.present?
+                = assembly.name + " @ " + product.storage_location
+              - else
+                = assembly.name
+          / span = number_to_percentage(assembly.fraction.to_f * 100, precision: 1, strip_insignificant_zeros: true)
+          - qty = number_with_precision(assembly.target_quantity(@batch.weight_base, product), precision: 3, strip_insignificant_zeros: true)
+          span = "#{format_weight_with_units(assembly.target_weight(@batch.weight_base))} = #{format_weight_with_units(product.weight_base)} x #{qty}"
+          span = format_weight_with_units(cumulative_weight)
+          / span = product.storage_location
+          span: input.fw style="height: 2rem" name="actual_weight"
+          span: input.fw style="height: 2rem" name="batch_uid"

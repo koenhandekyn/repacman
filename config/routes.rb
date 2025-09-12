@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   resources :batches do
     get :print, on: :member
+    get :tablet, on: :member
   end
   resources :assemblies
 

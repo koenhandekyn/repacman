@@ -2,6 +2,9 @@
   | Productie #{@batch.batch_uid}
 
 .mb style="display: inline-flex; width: fit-content; gap: 0.5rem; margin-left: auto; margin-top: -2rem;"
+  = button_to tablet_batch_path(@batch), class: "btn", title: "Tablet", method: :get do
+    span.material-symbols-outlined tablet
+
   = button_to print_batch_path(@batch), class: "btn", title: "Print", method: :get do
     span.material-symbols-outlined print
 

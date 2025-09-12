@@ -1,5 +1,5 @@
 class BatchesController < ApplicationController
-  before_action :set_batch, only: %i[ show print edit update destroy ]
+  before_action :set_batch, only: %i[ show tablet print edit update destroy ]
 
   # GET /batches
   def index
@@ -12,6 +12,11 @@ class BatchesController < ApplicationController
   # GET /batches/1
   def show
     @products = Product.includes(:family).where(family: @batch.family)
+  end
+
+  def tablet
+    @products = Product.includes(:family).where(family: @batch.family)
+    render :tablet, layout: "raw"
   end
 
   def print
