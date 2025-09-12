@@ -316,6 +316,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_144347) do
     t.index ["name"], name: "index_plants_on_name"
   end
 
+  create_table "production_inputs_batch", id: { type: :string, limit: 36, comment: "GUID Exact Online" }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "ItemCode", limit: 50, null: false, comment: "ItemCode Exact Online"
+    t.string "batch_number", limit: 100, null: false, comment: "BatchNumber Exact Online"
+    t.decimal "available_quantity", precision: 20, scale: 6, comment: "Avalable quantity in Exact Online"
+    t.timestamp "UpdatedAt", default: -> { "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }, null: false
+    t.json "warehouses", comment: "JSON output warehouses Exact Online"
+    t.index ["ItemCode"], name: "index_production_inputs_batch_on_ItemCode"
+  end
+
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "weight", default: "", null: false
@@ -333,6 +342,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_144347) do
     t.boolean "is_external", default: false
     t.boolean "is_production", default: false
     t.string "storage_location"
+    t.string "repack_mother_Itemcode"
     t.index ["bag_id"], name: "index_products_on_bag_id"
     t.index ["barcode"], name: "index_products_on_barcode", unique: true
     t.index ["code"], name: "index_products_on_code", unique: true
