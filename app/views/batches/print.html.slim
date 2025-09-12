@@ -22,13 +22,13 @@
       span = @batch.best_before_date.strftime('%Y-%m-%d')
       span.text-right = @batch.weight_base
 
-    cols.mt.mb.bold style="grid-template-columns: 1fr 6rem 12rem 10rem"
+    cols.mt.mb.bold style="grid-template-columns: 1fr 6rem 12rem 14rem"
       label Output
       label Aantal
       label Batch
       label Label
     - @batch.batch_outputs.each do |batch_output|
-      cols.mb style="grid-template-columns: 1fr 6rem 12rem 10rem"
+      cols style="grid-template-columns: 1fr 6rem 12rem 14rem"
         span = batch_output.product.name
         span = batch_output.quantity
         span = batch_output.batch_uid
