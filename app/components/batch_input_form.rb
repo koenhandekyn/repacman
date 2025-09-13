@@ -63,8 +63,8 @@ class Components::BatchInputForm < Components::Base
           form.number_field(:quantity, min: 0.00, step: 0.01, placeholder: "Quantity", class: "text-right", required: true)
           form.text_field(:product_weight, value: product_weight, disabled: true, class: "text-right")
           form.text_field(:weight, value: weight, disabled: true, class: "xtext-right")
-          form.text_field(:batch_uid, placeholder: "Batch", list: "batch_uid_list", autocomplete: "off")
-          datalist(id: "batch_uid_list") do
+          form.text_field(:batch_uid, placeholder: "Batch", list: "batch_uid_list_#{@batch_input.product.id}", autocomplete: "off")
+          datalist(id: "batch_uid_list_#{@batch_input.product.id}") do
             available_batch_uids.each do |batch_uid|
               option(value: batch_uid.to_s.strip)
             end
