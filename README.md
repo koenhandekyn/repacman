@@ -1,6 +1,6 @@
 # README
 
-Bio-Ron RePacMan
+Natuly Labelling
 
 # fetch db to local
 

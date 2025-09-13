@@ -17,13 +17,12 @@ class PrintedsController < ApplicationController
       printeds
     end
     respond_to do |format|
-
       format.xml {
         # force download
         send_data(render_to_string,
-                  filename: "exact-repacman-#{Time.zone.now.to_date}.xml",
+                  filename: "exact-natuly-labelling-#{Time.zone.now.to_date}.xml",
                   type: "application/xml",
-                  disposition: 'attachment')
+                  disposition: "attachment")
       }
     end
   end
@@ -68,13 +67,14 @@ class PrintedsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_printed
-      @printed = Printed.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def printed_params
-      params.require(:printed).permit(:itemCode, :Batch, :XMLExported)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_printed
+    @printed = Printed.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def printed_params
+    params.require(:printed).permit(:itemCode, :Batch, :XMLExported)
+  end
 end
