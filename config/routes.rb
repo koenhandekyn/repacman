@@ -18,6 +18,11 @@ Rails.application.routes.draw do
     get :export, on: :collection
   end
 
+  # API routes
+  namespace :api do
+    resources :printeds, only: [:index, :show]
+  end
+
   resources :batches do
     get :print, on: :member
     get :tablet, on: :member
