@@ -12,7 +12,7 @@ class Api::PrintedsController < ActionController::API
       # Lock the rows with xml_exported_at as nil to prevent other transactions from updating them
       printeds = Printed.xml_exported_at_nil.lock(true)
       # Update the locked rows' xml_exported_at field to the current time
-      Printed.where(id: printeds.map(&:id)).update_all(xml_exported_at: Time.now)
+      # Printed.where(id: printeds.map(&:id)).update_all(xml_exported_at: Time.now)
       # Return the locked rows
       printeds
     end
